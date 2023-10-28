@@ -8,8 +8,10 @@
   age.secrets.q.file = ../../secrets/q.age;
 
   programs.fish.enable = true;
+  users.users.root = { password = "1234"; };
   users.users.q = {
-    passwordFile = config.age.secrets.q.path;
+    # passwordFile = config.age.secrets.q.path;
+    password = "1234";
     isNormalUser = true;
     extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input"];
     shell = pkgs.fish;
