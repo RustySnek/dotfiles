@@ -35,26 +35,15 @@ in {
     layout = "us";
     libinput.enable = true;
     desktopManager.xterm.enable = false;
-    windowManager.i3 = {
+    windowManager.bspwm = {
       enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        kitty
-        polybar
-        rofi
-        i3status
-        i3lock
-        i3blocks
-      ];
     };
     displayManager = {
-      # defaultSession = "none+i3";
+      defaultSession = "none+bspwm";
       lightdm.enable = true;
     };
   };
-  services.picom = {
-    enable = true;
-  };
+
   boot.kernelParams = ["i1915.force_probe=a7a8"];
   boot.blacklistedKernelModules = ["nouveau" "nvidiafb"];
 
