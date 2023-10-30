@@ -5,7 +5,6 @@
 }: {
   imports = [
     impermanence.nixosModules.home-manager.impermanence
-    ./bspwm.nix
     ./direnv.nix
     ./git.nix
     ./kitty.nix
@@ -22,9 +21,9 @@
   ];
   services.udiskie.enable = true;
   xdg.enable = true;
-#   home.persistance."/nix/persist/home/poro".allowOther = true;
-#   home.persistance."/nix/persist/home/poro" = {
- #  directories = [];
-  # };
+  home.persistence."/nix/persist/home/poro" = {
+    directories = [];
+    allowOther = true;
+  };
   home.stateVersion = "23.05";
 }
