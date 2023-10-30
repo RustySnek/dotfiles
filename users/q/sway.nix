@@ -37,47 +37,6 @@ in {
     x11.enable = true;
   };
 
-  services.kanshi = {
-    enable = true;
-    profiles = {
-      undocked = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-            status = "enable";
-          }
-          {
-            criteria = "*";
-            status = "enable";
-          }
-        ];
-      };
-
-      docked = {
-        exec = [
-          "for workspace in {1..5}; do ${pkgs.sway}/bin/swaymsg \"workspace $workspace, move workspace to 'ASUSTek COMPUTER INC ASUS VG32V 0x0000B75D'\"; done"
-          "for workspace in {1..5}; do ${pkgs.sway}/bin/swaymsg \"workspace $workspace output 'ASUSTek COMPUTER INC ASUS VG32V 0x0000B75D'\"; done"
-          "for workspace in {6..10}; do ${pkgs.sway}/bin/swaymsg \"workspace $workspace, move workspace to 'LG Electronics LG SDQHD 205NTNH5W679'\"; done"
-          "for workspace in {6..10}; do ${pkgs.sway}/bin/swaymsg \"workspace $workspace output 'LG Electronics LG SDQHD 205NTNH5W679'\"; done"
-        ];
-        outputs = [
-          {
-            criteria = "eDP-1";
-            status = "disable";
-          }
-          {
-            criteria = "ASUSTek COMPUTER INC ASUS VG32V 0x0000B75D";
-            position = "0,1440";
-          }
-          {
-            criteria = "LG Electronics LG SDQHD 205NTNH5W679";
-            position = "2560,0";
-          }
-        ];
-      };
-    };
-  };
-
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -157,6 +116,7 @@ in {
 
   wayland.windowManager.sway = {
     enable = true;
+    package = pkgs.swayfx;
     extraConfig = ''
       input * xkb_layout pl
     '';
@@ -165,12 +125,6 @@ in {
       # Use kitty as default terminal
       terminal = "${pkgs.kitty}/bin/kitty";
       menu = "${pkgs.fuzzel}/bin/fuzzel --show-actions";
-      gaps = {
-        inner = 12;
-        outer = 5;
-        smartGaps = true;
-        smartBorders = "no_gaps";
-      };
       window.titlebar = false;
       window.commands = [
         {
@@ -199,6 +153,7 @@ in {
         }
       ];
       keybindings = lib.mkOptionDefault {
+        "${modifier}+x" = "kill";
         # Focus window
         "${modifier}+n" = "focus left";
         "${modifier}+e" = "focus down";

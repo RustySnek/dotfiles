@@ -25,7 +25,6 @@
     extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
     extra-substituters = "https://devenv.cachix.org";
   };
-
   outputs = inputs @ {
     nixpkgs,
     nixpkgs-unstable,
@@ -37,7 +36,7 @@
     agenix,
     ...
   }: let
-    user = "q";
+    user = "poro";
   in {
     nixosConfigurations = (
       import ./hosts {

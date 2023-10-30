@@ -15,6 +15,7 @@
 
   programs.sway = {
     enable = true;
+    package = null;
   };
 
   services.dbus.enable = true;
