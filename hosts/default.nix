@@ -22,7 +22,6 @@ in {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence devenv agenix;};
     modules = [
-
       {
         nixpkgs.config.allowUnfreePredicate = _: true;
       }
@@ -38,7 +37,6 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 
-        home-manager.users.q = import ../users/q;
         home-manager.users.poro = import ../users/poro;
         home-manager.extraSpecialArgs = {
           inherit impermanence;

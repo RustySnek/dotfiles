@@ -30,7 +30,7 @@
   services.udisks2.enable = true;
 
   powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = "powersave";
+  powerManagement.cpuFreqGovernor = "ondemand";
   services.tlp.enable = true;
 
   services.printing.enable = true;
@@ -53,8 +53,6 @@
   virtualisation.libvirtd.qemu.ovmf.packages = [pkgs.OVMFFull];
   virtualisation.libvirtd.qemu.ovmf.enable = true;
   programs.dconf.enable = true;
-
-  users.users.q.extraGroups = ["libvirtd"];
 
   environment.systemPackages = with pkgs; [
     devenv.packages.x86_64-linux.devenv
