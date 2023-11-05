@@ -34,7 +34,7 @@ in {
     enable = true;
     layout = "us";
     libinput = {
-      enable = enable;
+      enable = true;
     };
 
     synaptics.enable = true;
