@@ -33,7 +33,11 @@ in {
   services.xserver = {
     enable = true;
     layout = "us";
-    libinput.enable = true;
+    libinput = {
+      enable = enable;
+    };
+
+    synaptics.enable = true;
     desktopManager.xterm.enable = false;
     windowManager.bspwm = {
       enable = true;

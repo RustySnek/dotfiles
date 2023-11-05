@@ -19,7 +19,8 @@
     picom
     rust-analyzer
     brillo
-    yt-dlp
+unzip
+yt-dlp
     xclip
     flameshot
     xwallpaper

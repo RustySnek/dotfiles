@@ -11,7 +11,7 @@
     # passwordFile = config.age.secrets.q.path;
     password = "1234";
     isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input"];
+    extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input" "video"];
     shell = pkgs.fish;
   };
 
