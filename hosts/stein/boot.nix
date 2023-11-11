@@ -37,7 +37,6 @@ in {
       enable = true;
     };
 
-    synaptics.enable = true;
     desktopManager.xterm.enable = false;
     windowManager.bspwm = {
       enable = true;

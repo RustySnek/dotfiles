@@ -20,7 +20,43 @@
     ./sway.nix
     ./udev.nix
   ];
+services.postgresql = {
+  enable = true;
+  ensureDatabases = [ "mydatabase" ];
+  enableTCPIP = true;
+  port = 5432;
+  authentication = pkgs.lib.mkOverride 10 ''
+ 
+ #...
 
+      local all       all     trust
+    #type database DBuser origin-address auth-method
+    # ipv4
+    host  all      all     127.0.0.1/32   trust
+  '';
+  initialScript = pkgs.writeText "backend-initScript" ''
+    CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+    CREATE DATABASE nixcloud;
+    GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+  '';
+};  services.tlp = {
+    enable = true;
+    settings = {
+      INTEL_GPU_MAX_FREQ_ON_BAT=800;
+    INTEL_GPU_BOOST_FREQ_ON_BAT=1000;
+
+      INTEL_GPU_ENABLE_PSR_ON_BAT=1;
+PLATFORM_PROFILE_ON_AC="performance";
+PLATFORM_PROFILE_ON_BAT="low-power";
+    
+CPU_ENERGY_PERF_POLICY_ON_BAT="power";
+CPU_MIN_PERF_ON_BAT=5;
+CPU_MAX_PERF_ON_BAT=30;
+};
+  };
+  services.thermald = {
+  enable = true;
+  };
   services.fprintd = {
     enable = true;
   };
@@ -30,8 +66,7 @@
   services.udisks2.enable = true;
 
   powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = "ondemand";
-  services.tlp.enable = true;
+  powerManagement.cpuFreqGovernor = "balanced";
 
   services.printing.enable = true;
   services.avahi.enable = true;

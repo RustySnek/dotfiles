@@ -6,6 +6,8 @@
       dns = "none";
     };
     dhcpcd.extraConfig = "nohook resolv.conf";
+  
+    firewall.interfaces.wlp0s20f3.allowedTCPPorts = [8081 5000 19000];
   };
 
   services.dnscrypt-proxy2 = {

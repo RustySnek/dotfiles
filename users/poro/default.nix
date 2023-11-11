@@ -16,7 +16,9 @@
   ];
   home.packages = with pkgs; [
     gotop
-    picom
+
+power-profiles-daemon
+picom
     rust-analyzer
     brillo
 unzip
