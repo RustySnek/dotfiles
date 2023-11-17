@@ -68,7 +68,7 @@
   services.sxhkd.enable = true;
   services.sxhkd.keybindings = {
     "super + Return" = "kitty";
-    "Print" = "flameshot gui";
+    "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
     "super + Up" = "brillo -A 5";
     "super + Down" = "brillo -U 5";

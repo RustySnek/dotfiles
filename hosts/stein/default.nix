@@ -51,7 +51,7 @@ PLATFORM_PROFILE_ON_BAT="low-power";
     
 CPU_ENERGY_PERF_POLICY_ON_BAT="power";
 CPU_MIN_PERF_ON_BAT=5;
-CPU_MAX_PERF_ON_BAT=30;
+CPU_MAX_PERF_ON_BAT=60;
 };
   };
   services.thermald = {
@@ -87,6 +87,7 @@ CPU_MAX_PERF_ON_BAT=30;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.packages = [pkgs.OVMFFull];
   virtualisation.libvirtd.qemu.ovmf.enable = true;
+virtualisation.docker.enableNvidia = true;
   programs.dconf.enable = true;
 
   environment.systemPackages = with pkgs; [

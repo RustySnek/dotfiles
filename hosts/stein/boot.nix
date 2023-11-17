@@ -91,5 +91,6 @@ in {
   hardware.opengl.driSupport = true;
   hardware.opengl.extraPackages = with pkgs; [intel-media-driver vaapiIntel vaapiVdpau libvdpau-va-gl];
 
+  hardware.opengl.driSupport32Bit = true;
   hardware.cpu.intel.updateMicrocode = true;
 }

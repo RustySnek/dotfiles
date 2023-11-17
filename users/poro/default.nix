@@ -17,14 +17,15 @@
   home.packages = with pkgs; [
     gotop
 
+nvidia-docker
 power-profiles-daemon
 picom
-    rust-analyzer
+gscreenshot
+rust-analyzer
     brillo
 unzip
 yt-dlp
     xclip
-    flameshot
     xwallpaper
     xss-lock
     i3lock
@@ -43,12 +44,13 @@ yt-dlp
     ripgrep
     xorg.xinit
   ];
-  services.udiskie.enable = true;
+services.udiskie.enable = true;
   xdg.enable = true;
   #xdg.configFile."polybar".enable = true;
   #xdg.configFile."polybar".source = ./polybar;
   home.persistence."/nix/persist/home/poro" = {
     directories = [
+".local/share/docker"
       ".local/state/wireplumber"
       ".config/rofi"
       ".config/polybar"
