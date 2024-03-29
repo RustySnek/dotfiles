@@ -16,7 +16,6 @@
   ];
   home.packages = with pkgs; [
     gotop
-
 nvidia-docker
 power-profiles-daemon
 picom

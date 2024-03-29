@@ -8,7 +8,7 @@
   imports = [
     (import ./disk.nix {
       inherit lib;
-      disks = ["/dev/nvme0n1"];
+      disks = ["/dev/sda"];
     })
     ./boot.nix
     ./persistence.nix
@@ -39,25 +39,7 @@ services.postgresql = {
     CREATE DATABASE nixcloud;
     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
   '';
-};  services.tlp = {
-    enable = true;
-    settings = {
-      INTEL_GPU_MAX_FREQ_ON_BAT=800;
-    INTEL_GPU_BOOST_FREQ_ON_BAT=1000;
-
-      INTEL_GPU_ENABLE_PSR_ON_BAT=1;
-PLATFORM_PROFILE_ON_AC="performance";
-PLATFORM_PROFILE_ON_BAT="low-power";
-    
-CPU_ENERGY_PERF_POLICY_ON_BAT="power";
-CPU_MIN_PERF_ON_BAT=5;
-CPU_MAX_PERF_ON_BAT=60;
-};
-  };
-  services.thermald = {
-  enable = true;
-  };
-  services.fprintd = {
+};    services.fprintd = {
     enable = true;
   };
 
@@ -65,8 +47,7 @@ CPU_MAX_PERF_ON_BAT=60;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = "balanced";
+  powerManagement.cpuFreqGovernor = "performance";
 
   services.printing.enable = true;
   services.avahi.enable = true;

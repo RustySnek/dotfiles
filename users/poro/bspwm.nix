@@ -36,7 +36,9 @@
         "window_type = 'desktop'"
         "_GTK_FRAME_EXTENTS@:c"
       ];
-      backend = "xrender";
+      backend = "xr_glx_hybrid";
+
+      use-damage = false;
       vsync = true;
       mark-wmwin-focused = true;
       mark-ovredir-focused = true;
@@ -45,7 +47,6 @@
       unredir-if-possible = false;
       detect-transient = true;
       glx-no-stencil = true;
-      use-damage = true;
       log-level = "warn";
       wintypes = {
         tooltip = {
@@ -97,26 +98,13 @@
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-          xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#1f1f1f" -f -e&
-          flameshot &
-          xwallpaper --center ~/Pictures/hw.jpg &
-        ~/.config/polybar/launch.sh --forest &
+        bspc monitor -d I II III IV V VI VII VIII IX X &
+               xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#1f1f1f" -f -e&
+               flameshot &
+               xwallpaper --center ~/Pictures/hw.jpg &
+             ~/.config/polybar/launch.sh --forest &
       ''
     ];
     package = pkgs.bspwm;
-    monitors = {
-      eDP-1 = [
-        "I"
-        "II"
-        "III"
-        "IV"
-        "V"
-        "VI"
-        "VII"
-        "VIII"
-        "IX"
-        "X"
-      ];
-    };
   };
 }
