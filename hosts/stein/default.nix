@@ -20,6 +20,7 @@
     ./sway.nix
     ./udev.nix
   ];
+
 services.postgresql = {
   enable = true;
   ensureDatabases = [ "mydatabase" ];
@@ -85,11 +86,13 @@ CPU_MAX_PERF_ON_BAT=60;
   time.timeZone = "Europe/Warsaw";
 
   virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemu.ovmf.packages = [pkgs.OVMFFull];
   virtualisation.libvirtd.qemu.ovmf.enable = true;
 virtualisation.docker.enableNvidia = true;
   programs.dconf.enable = true;
+programs.steam = {
+enable = true;
 
+};
   environment.systemPackages = with pkgs; [
     devenv.packages.x86_64-linux.devenv
     agenix.packages.x86_64-linux.default
@@ -108,6 +111,7 @@ virtualisation.docker.enableNvidia = true;
   fonts.fonts = with pkgs; [
     migu
     baekmuk-ttf
+    quicksand
     nanum
     noto-fonts-emoji
     twemoji-color-font
@@ -120,5 +124,5 @@ virtualisation.docker.enableNvidia = true;
   nix.settings.substituters = ["https://nix-community.cachix.org" "https://cache.nixos.org"];
   nix.settings.trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   networking.hostName = "stein";
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }

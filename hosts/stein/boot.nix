@@ -24,7 +24,7 @@ in {
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
-
+  boot.extraModprobeConfig = "options kvm_intel";
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = ["nvme" "dm-snapshot" "i2c-dev" "i2c-piix4" "vfio" "vfio_iommu_type1" "vfio_pci" "nvidia"];

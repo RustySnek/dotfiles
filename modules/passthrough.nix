@@ -19,6 +19,6 @@ in {
     ids = builtins.concatStringsSep "," cfg.ids;
   in
     lib.mkIf cfg.enable {
-      boot.extraModprobeConfig = "options vfio-pci ids=${ids}";
+      boot.extraModprobeConfig = "options kvm_intel vfio-pci ids=${ids}";
     };
 }

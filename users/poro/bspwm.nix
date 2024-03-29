@@ -99,7 +99,8 @@
       ''
           xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#1f1f1f" -f -e&
           flameshot &
-          xwallpaper --center ~/Pictures/hw.jpg &
+          xwallpaper --stretch ~/Pictures/underwasser.jpg &
+          
         ~/.config/polybar/launch.sh --forest &
       ''
     ];

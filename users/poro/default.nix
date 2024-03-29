@@ -16,20 +16,43 @@
   ];
   home.packages = with pkgs; [
     gotop
-
 nvidia-docker
+wine
+jre8
+openvpn
+lutris
+exploitdb
+zap
+inetutils
+john
+nmap
+winetricks
 power-profiles-daemon
 picom
+krita
 gscreenshot
+lsof
 rust-analyzer
     brillo
+    
 unzip
 yt-dlp
+ffmpeg-full
+glibc
+yuzu
+netcat-gnu
+wireshark
+gobuster
+metasploit
+musikcube
     xclip
+    mysql
+    wget
     xwallpaper
     xss-lock
     i3lock
     rofi
+    kazam
     dmenu
     fd
     python310Packages.tree-sitter
@@ -53,15 +76,21 @@ services.udiskie.enable = true;
 ".local/share/docker"
       ".local/state/wireplumber"
       ".config/rofi"
+      ".paddleocr/"
+      ".wine"
       ".config/polybar"
       ".config/polybar-themes"
       ".config/lvim"
-      ".local/bin/"
+      ".local/bin"
+      ".steam/"
+      ".local/share/lutris"
+      "Games"
+      ".cache/huggingface"
     ];
     allowOther = true;
   };
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 }
