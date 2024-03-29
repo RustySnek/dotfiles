@@ -10,6 +10,7 @@
       inherit lib;
       disks = ["/dev/sda"];
     })
+    ./nvidia.nix
     ./boot.nix
     ./persistence.nix
     ./users.nix
