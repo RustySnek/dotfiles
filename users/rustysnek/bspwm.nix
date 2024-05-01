@@ -90,22 +90,22 @@
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/rustysnek/lunarvim/install.sh &
-             ~/.config/polybar-themes/setup.sh &
+      xrandr --output DP-4 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-4 --refresh 60.0 --mode 1920x1080 &
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-          xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#1f1f1f" -f -e&
-          flameshot &
-          xwallpaper --stretch ~/Pictures/underwasser.jpg &
-          
-        ~/.config/polybar/launch.sh --blocks &
+                  xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -f -e&
+                  flameshot &
+                  xwallpaper --maximize ~/Pictures/ml2.png & 
+                ~/.config/polybar/launch.sh --forest &
+        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/rustysnek/lunarvim/install.sh &
+
       ''
     ];
     package = pkgs.bspwm;
     monitors = {
-      DP-1 = [
+      DP-4 = [
         "I"
         "II"
         "III"
@@ -117,17 +117,17 @@
         "IX"
         "X"
       ];
-      HDMI-1 = [
-	"XI"
-	"XII"
-	"XIII"
-	"XIV"
-	"XV"
-	"XVI"
-	"XVII"
-	"XVIII"
-	"XIX"
-	"XX"
+      HDMI-0 = [
+        "XI"
+        "XII"
+        "XIII"
+        "XIV"
+        "XV"
+        "XVI"
+        "XVII"
+        "XVIII"
+        "XIX"
+        "XX"
       ];
     };
   };
