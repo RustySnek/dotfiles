@@ -67,6 +67,8 @@ musikcube
     ripgrep
     xorg.xinit
   ];
+
+
 services.udiskie.enable = true;
   xdg.enable = true;
   #xdg.configFile."polybar".enable = true;

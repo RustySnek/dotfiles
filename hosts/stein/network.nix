@@ -1,7 +1,7 @@
 {...}: {
   networking = {
   extraHosts = ''
-  172.21.0.2 poro.test.elixir
+  172.20.0.2 poro.test.elixir
   10.10.11.242 devvortex.htb
   10.10.11.242 dev.devvortex.htb
   10.10.11.221 2million.htb

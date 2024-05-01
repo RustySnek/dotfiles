@@ -101,7 +101,7 @@
           flameshot &
           xwallpaper --stretch ~/Pictures/underwasser.jpg &
           
-        ~/.config/polybar/launch.sh --forest &
+        ~/.config/polybar/launch.sh --blocks &
       ''
     ];
     package = pkgs.bspwm;
