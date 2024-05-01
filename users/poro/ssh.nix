@@ -1,5 +1,5 @@
 {...}: {
-  home.persistence."/nix/persist/home/q".files = [
+  home.persistence."/nix/persist/home/poro".files = [
     ".ssh/id_rsa"
     ".ssh/id_rsa.pub"
     ".ssh/id_ed25519.pub"

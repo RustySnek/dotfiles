@@ -16,8 +16,8 @@
     ./docker.nix
     ./gpg.nix
     ./network.nix
+    ./misc.nix
     ./audio.nix
-    ./sway.nix
     ./udev.nix
   ];
 
@@ -40,24 +40,7 @@ services.postgresql = {
     CREATE DATABASE nixcloud;
     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
   '';
-};  services.tlp = {
-    enable = true;
-    settings = {
-      INTEL_GPU_MAX_FREQ_ON_BAT=800;
-    INTEL_GPU_BOOST_FREQ_ON_BAT=1000;
-
-      INTEL_GPU_ENABLE_PSR_ON_BAT=1;
-PLATFORM_PROFILE_ON_AC="performance";
-PLATFORM_PROFILE_ON_BAT="low-power";
-    
-CPU_ENERGY_PERF_POLICY_ON_BAT="power";
-CPU_MIN_PERF_ON_BAT=5;
-CPU_MAX_PERF_ON_BAT=60;
-};
-  };
-  services.thermald = {
-  enable = true;
-  };
+};  
   services.fprintd = {
     enable = true;
   };
@@ -66,8 +49,8 @@ CPU_MAX_PERF_ON_BAT=60;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = "balanced";
+  powerManagement.powertop.enable = false;
+  powerManagement.cpuFreqGovernor = "performance";
 
   services.printing.enable = true;
   services.avahi.enable = true;
@@ -102,13 +85,10 @@ enable = true;
       ];
     })
     virt-manager
-    brightnessctl
-    wdisplays
-    swww
     powertop
   ];
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     migu
     baekmuk-ttf
     quicksand
@@ -119,10 +99,10 @@ enable = true;
     twitter-color-emoji
     nerdfonts
   ];
-nix.settings.trusted-users = ["poro"];
+nix.settings.trusted-users = ["rustysnek"];
   nix.settings.substituters = ["https://nix-community.cachix.org" "https://cache.nixos.org" "https://devenv.cachix.org"];
   nix.settings.trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  networking.hostName = "stein";
+  networking.hostName = "chunchumaru";
   system.stateVersion = "23.11";
 }

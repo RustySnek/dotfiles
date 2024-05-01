@@ -70,14 +70,13 @@
     "super + Return" = "kitty";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
-    "super + Up" = "brillo -A 5";
-    "super + Down" = "brillo -U 5";
     "super + alt + l" = "i3lock --nofork -c '#1f1f1f' -f -e";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
     "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
     "super + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
     "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
+    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11-19,20}'";
   };
   xsession.windowManager.bspwm = {
     enable = true;
@@ -106,7 +105,7 @@
     ];
     package = pkgs.bspwm;
     monitors = {
-      eDP-1 = [
+      DP-1 = [
         "I"
         "II"
         "III"
@@ -117,6 +116,18 @@
         "VIII"
         "IX"
         "X"
+      ];
+      HDMI-1 = [
+	"XI"
+	"XII"
+	"XIII"
+	"XIV"
+	"XV"
+	"XVI"
+	"XVII"
+	"XVIII"
+	"XIX"
+	"XX"
       ];
     };
   };

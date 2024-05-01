@@ -1,23 +1,12 @@
 {...}: {
   networking = {
-  extraHosts = ''
-  172.20.0.2 poro.test.elixir
-  10.10.11.242 devvortex.htb
-  10.10.11.242 dev.devvortex.htb
-  10.10.11.221 2million.htb
-  10.10.11.252 bizness.htb
-  10.10.11.249 biz.crafty.htb
-  10.10.11.249 crafty.htb
-  10.10.11.249 play.crafty.htb
-'';
+  extraHosts = '''';
     nameservers = ["127.0.0.1" "::1"];
     networkmanager = {
       enable = true;
       dns = "none";
     };
     dhcpcd.extraConfig = "nohook resolv.conf";
-  
-    firewall.interfaces.wlp0s20f3.allowedTCPPorts = [8081 5000 19000];
   };
 
   services.dnscrypt-proxy2 = {

@@ -33,13 +33,10 @@ krita
 gscreenshot
 lsof
 rust-analyzer
-    brillo
-    
 unzip
 yt-dlp
 ffmpeg-full
 glibc
-yuzu
 netcat-gnu
 wireshark
 gobuster
@@ -59,6 +56,7 @@ musikcube
     tree-sitter
     vimPlugins.nvim-treesitter
     brave
+    firefox
     polybar
     python310Packages.pynvim
     python310
@@ -83,6 +81,7 @@ services.udiskie.enable = true;
       ".config/polybar"
       ".config/polybar-themes"
       ".config/lvim"
+      ".local/share/lvim"
       ".local/bin"
       ".steam/"
       ".local/share/lutris"

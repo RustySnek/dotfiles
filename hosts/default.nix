@@ -18,7 +18,7 @@
     ...
   }: {nixpkgs.overlays = [unstableOverlay];};
 in {
-  stein = lib.nixosSystem {
+  chunchumaru = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence devenv agenix;};
     modules = [
@@ -30,7 +30,7 @@ in {
       nur.nixosModules.nur
       agenix.nixosModules.default
       unstableModule
-      ./stein
+      ./chunchumaru
       home-manager.nixosModules.home-manager
       {
         nixpkgs.overlays = [nur.overlay unstableOverlay];
