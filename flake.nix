@@ -36,7 +36,7 @@
     agenix,
     ...
   }: let
-    user = "poro";
+    user = "rustysnek";
   in {
     nixosConfigurations = (
       import ./hosts {

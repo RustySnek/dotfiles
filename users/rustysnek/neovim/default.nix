@@ -21,7 +21,7 @@
     gcc
   ];
 
-  home.persistence."/nix/persist/home/poro" = {
+  home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
       ".local/share/nvim"
     ];

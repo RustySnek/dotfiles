@@ -90,7 +90,7 @@
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/poro/lunarvim/install.sh &
+        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/rustysnek/lunarvim/install.sh &
              ~/.config/polybar-themes/setup.sh &
       ''
     ];

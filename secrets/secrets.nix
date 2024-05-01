@@ -1,7 +1,7 @@
 let
-	chunchumaruHostRSA = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1FXEZQ2J13FTPLnfP1Di80+iJ9Ctxdikdrs64ZvsN4uMxCR3Wsy/7wUBNmKX802U1MSn0+4M39gY+w+/phOROM+Ho3wCxh6YrthenifpiFIEoK6eqd6YjNMcvboPgTyrob2of7bBHA99hmbKiyUq8qIapBs8FEl9Zau4pFOT5m+obEG9D+tyoQbRfvqCnBajE2NbVESaqV1Shg+p6yJq67ZP6pY2BVugo4bVRtdB/BCsqwEPgDWNSeg+vBa8t7K5t5d2JzqeMVGPTbR6/TvJ2xVIlMeHMN6vJBGYWaFh87lSrOtVcRHs3QPdWzEouDoff3cJnWLllSYITFQLwFFSO25HwCTk8FFHLMD73AKazuDaeXLiVxprHJ2DDWvS158nkTUZt9w+XI6xPeyoobNzsInslvc8jYXy81N7DunjyrKp0UJhGXDKrqsBC64DJ8FvRdt3lslRntRu1IKLFMHfVrXEE6sx87s/4uXdgjWG+7ohaQBxNuRSPG6LVcCF17G0= poro@stein";
-	chunchumaru = [chunchumaruostRSA];
+	chunchumaruHostRSA = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKt+SpHfKBN8/7Cdc1lrKy54NYZ9d6J6moL8pe9kINUf rustysnek@chunchumaru";
+	chunchumaru = [ chunchumaruHostRSA];
 in {
-  "poro.age".publicKeys = chunchumaru;
+  "rustysnek.age".publicKeys = chunchumaru;
 }
 

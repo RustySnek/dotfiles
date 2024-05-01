@@ -6,9 +6,10 @@
   users.mutableUsers = false;
 
   programs.fish.enable = true;
-  age.secrets.poro.file = ../../secrets/poro.age;
-  users.users.poro = {
-    hashedPasswordFile = config.age.secrets.poro.path;
+  users.users.root.password = "1234";
+  age.secrets.rustysnek.file = ../../secrets/rustysnek.age;
+  users.users.rustysnek = {
+    hashedPasswordFile = config.age.secrets.rustysnek.path;
     isNormalUser = true;
     extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input" "video"];
     shell = pkgs.fish;
@@ -19,7 +20,7 @@
   # these are host specific
   # for more general ones set them using home-manager
   environment.persistence."/nix/persist" = {
-    users.poro.directories = [
+    users.rustysnek.directories = [
       "Projects"
       "Documents"
       "Music"

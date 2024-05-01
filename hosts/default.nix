@@ -37,7 +37,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 
-        home-manager.users.poro = import ../users/poro;
+        home-manager.users.rustysnek = import ../users/rustysnek;
         home-manager.extraSpecialArgs = {
           inherit impermanence;
         };

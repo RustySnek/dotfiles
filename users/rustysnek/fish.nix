@@ -25,7 +25,7 @@
     };
   };
 
-  home.persistence."/nix/persist/home/poro" = {
+  home.persistence."/nix/persist/home/rustysnek" = {
     files = [
       ".local/share/fish/fish_history"
     ];
