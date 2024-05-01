@@ -2,15 +2,7 @@
   pkgs,
   config,
   ...
-}: let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    exec -a "$0" "$@"
-  '';
-in {
+}:{
   boot.loader = {
     efi = {
       efiSysMountPoint = "/boot/EFI";
@@ -24,7 +16,7 @@ in {
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
   boot.extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
-  boot.extraModprobeConfig = "options kvm_intel";
+  boot.extraModprobeConfig = "options kvm_amd";
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = ["nvme" "dm-snapshot" "i2c-dev" "i2c-piix4" "vfio" "vfio_iommu_type1" "vfio_pci" "nvidia"];
@@ -34,7 +26,7 @@ in {
     enable = true;
     layout = "us";
     libinput = {
-      enable = true;
+      enable = false;
     };
 
     desktopManager.xterm.enable = false;
@@ -47,11 +39,9 @@ in {
     };
   };
 
-  boot.kernelParams = ["i1915.force_probe=a7a8"];
-  boot.blacklistedKernelModules = ["nouveau" "nvidiafb"];
+  boot.blacklistedKernelModules = ["nouveau" "nvidiafb" "amdgpu" "radeon" "intel_agp" "intel_atomisp"];
 
   services.xserver.videoDrivers = ["nvidia"];
-  environment.systemPackages = [nvidia-offload];
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     # Modesetting is required.
