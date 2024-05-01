@@ -91,6 +91,7 @@
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
       xrandr --output DP-4 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-4 --refresh 60.0 --mode 1920x1080 &
+      ~/.config/polybar-themes/setup.sh &
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
