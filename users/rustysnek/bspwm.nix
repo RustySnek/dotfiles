@@ -67,16 +67,16 @@
   };
   services.sxhkd.enable = true;
   services.sxhkd.keybindings = {
-    "super + Return" = "kitty";
+    "super + Return" = "kitty ~";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
-    "super + alt + l" = "i3lock --nofork -c '#1f1f1f' -f -e";
+    "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
-    "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
-    "super + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
-    "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
-    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11-19,20}'";
+    "alt + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
+    "alt + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
+    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
+    "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11,12,13,14,15,16,17,18,19,20}'";
   };
   xsession.windowManager.bspwm = {
     enable = true;
