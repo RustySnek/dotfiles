@@ -37,7 +37,7 @@
         "_GTK_FRAME_EXTENTS@:c"
       ];
       backend = "xrender";
-      vsync = true;
+      vsync = false;
       mark-wmwin-focused = true;
       mark-ovredir-focused = true;
       detect-rounded-corners = true;
@@ -73,25 +73,29 @@
     "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
-    "alt + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
-    "alt + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
-    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
-    "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11,12,13,14,15,16,17,18,19,20}'";
+    "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
+    "super + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
+    "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
+    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11,12,13,14,15,16,17,18,19,20}'";
+
   };
   xsession.windowManager.bspwm = {
     enable = true;
     settings = {
-      border_width = 2;
+      border_width = 5;
       gapless_monocle = true;
       borderless_monocle = true;
-      active_border_color = "#1c2e5d";
-      window_gap = 0.5;
-      split_ratio = 0.52;
+      active_border_color = "#63B7B7";
+      focused_border_color = "#23B7B7";
+      window_gap = 7.5;
+      split_ratio = 0.65;
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-      xrandr --output DP-4 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-4 --refresh 60.0 --mode 1920x1080 &
       ~/.config/polybar-themes/setup.sh &
+      xrandr --output DP-4 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-4 --refresh 60.0 --mode 1920x1080 &
+      nvidia-settings -a SyncToVBlank=0 &
+      export __GL_SYNC_TO_VBLANK=0
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [

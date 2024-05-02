@@ -32,6 +32,7 @@ picom
 krita
 gscreenshot
 lsof
+neofetch
 rust-analyzer
 unzip
 yt-dlp
@@ -57,6 +58,7 @@ musikcube
     vimPlugins.nvim-treesitter
     brave
     firefox
+    ungoogled-chromium
     polybar
     python310Packages.pynvim
     python310
