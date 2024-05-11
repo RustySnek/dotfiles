@@ -26,6 +26,8 @@
       "Music"
       "Pictures"
       ".config/BraveSoftware"
+      ".config/lutris"
+      ".mozilla"
     ];
   };
 }

@@ -3,6 +3,7 @@
   pkgs,
   devenv,
   agenix,
+  pipewire-sa,
   ...
 }: {
   imports = [
@@ -86,6 +87,8 @@ enable = true;
     })
     virt-manager
     powertop
+    jq
+    (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
   ];
 
   fonts.packages = with pkgs; [

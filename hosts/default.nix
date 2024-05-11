@@ -1,5 +1,6 @@
 {
   lib,
+  pipewire-screenaudio,
   disko,
   home-manager,
   impermanence,
@@ -17,11 +18,15 @@
     pkgs,
     ...
   }: {nixpkgs.overlays = [unstableOverlay];};
+ pipewire-screenaudio-overlay = final: prev: {
+    pipewire-sa = pipewire-screenaudio.packages.${prev.system}.default;
+  };
 in {
   chunchumaru = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence devenv agenix;};
     modules = [
+      {nixpkgs.overlays = [pipewire-screenaudio-overlay];}
       {
         nixpkgs.config.allowUnfreePredicate = _: true;
       }

@@ -2,6 +2,7 @@
   description = "ravensiris' dotfiles";
 
   inputs = {
+    pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
@@ -28,6 +29,7 @@
   outputs = inputs @ {
     nixpkgs,
     nixpkgs-unstable,
+    pipewire-screenaudio,
     home-manager,
     impermanence,
     disko,
@@ -41,7 +43,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nixpkgs-unstable home-manager impermanence disko user nur devenv agenix;
+        inherit pipewire-screenaudio inputs nixpkgs nixpkgs-unstable home-manager impermanence disko user nur devenv agenix;
       }
     );
   };

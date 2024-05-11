@@ -82,7 +82,7 @@
   xsession.windowManager.bspwm = {
     enable = true;
     settings = {
-      border_width = 5;
+      border_width = 3;
       gapless_monocle = true;
       borderless_monocle = true;
       active_border_color = "#63B7B7";

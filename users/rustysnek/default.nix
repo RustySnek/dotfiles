@@ -14,6 +14,7 @@
     ./gpg.nix
     ./neovim
   ];
+
   home.packages = with pkgs; [
     gotop
 nvidia-docker
@@ -56,8 +57,6 @@ musikcube
     python310Packages.tree-sitter
     tree-sitter
     vimPlugins.nvim-treesitter
-    brave
-    firefox
     ungoogled-chromium
     polybar
     python310Packages.pynvim
@@ -87,6 +86,7 @@ services.udiskie.enable = true;
       ".local/bin"
       ".steam/"
       ".local/share/lutris"
+      ".local/share/qbittorrent"
       "Games"
       ".cache/huggingface"
     ];
