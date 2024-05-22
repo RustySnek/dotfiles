@@ -16,6 +16,8 @@
     mypy
     ripgrep
     stylua
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
     lua-language-server
     gnumake
     gcc

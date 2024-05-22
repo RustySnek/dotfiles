@@ -20,7 +20,7 @@
     ./misc.nix
     ./audio.nix
     ./udev.nix
-  ];
+];
 
 services.postgresql = {
   enable = true;
@@ -87,6 +87,7 @@ enable = true;
     })
     virt-manager
     powertop
+    fzf
     jq
     (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
   ];

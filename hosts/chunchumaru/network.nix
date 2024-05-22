@@ -1,5 +1,6 @@
 {...}: {
   networking = {
+  enableIPv6 = false;
   extraHosts = '''';
     nameservers = ["127.0.0.1" "::1"];
     networkmanager = {

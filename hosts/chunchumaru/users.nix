@@ -6,7 +6,6 @@
   users.mutableUsers = false;
 
   programs.fish.enable = true;
-  users.users.root.password = "1234";
   age.secrets.rustysnek.file = ../../secrets/rustysnek.age;
   users.users.rustysnek = {
     hashedPasswordFile = config.age.secrets.rustysnek.path;
@@ -27,6 +26,7 @@
       "Pictures"
       ".config/BraveSoftware"
       ".config/lutris"
+      ".var/app/"
       ".mozilla"
     ];
   };

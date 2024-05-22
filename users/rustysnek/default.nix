@@ -64,9 +64,9 @@ musikcube
     qbittorrent
     mpv
     ripgrep
+    flatpak
     xorg.xinit
   ];
-
 
 services.udiskie.enable = true;
   xdg.enable = true;
@@ -84,6 +84,7 @@ services.udiskie.enable = true;
       ".config/lvim"
       ".local/share/lvim"
       ".local/bin"
+      ".local/share/Steam"
       ".steam/"
       ".local/share/lutris"
       ".local/share/qbittorrent"
