@@ -18,6 +18,7 @@
   home.packages = with pkgs; [
     gotop
 nvidia-docker
+element-web
 wine
 jre8
 openvpn

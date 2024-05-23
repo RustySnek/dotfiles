@@ -2,7 +2,7 @@
   xdg = {
     enable = true;
     configFile."nvim" = {
-      source = ./neovim;
+      source = ./neovim-conf;
       recursive = true;
     };
   };
