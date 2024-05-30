@@ -59,6 +59,11 @@ services.postgresql = {
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
+  services.flatpak.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+
   swapDevices = [
     {
       device = "/nix/persist/swapfile";
