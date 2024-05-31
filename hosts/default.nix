@@ -22,7 +22,7 @@
     pipewire-sa = pipewire-screenaudio.packages.${prev.system}.default;
   };
 in {
-  chunchumaru = lib.nixosSystem {
+  mochimaru = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence devenv agenix;};
     modules = [
@@ -42,7 +42,7 @@ in {
       nur.nixosModules.nur
       agenix.nixosModules.default
       unstableModule
-      ./chunchumaru
+      ./mochimaru
       home-manager.nixosModules.home-manager
       {
         nixpkgs.overlays = [nur.overlay unstableOverlay];

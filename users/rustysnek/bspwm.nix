@@ -93,24 +93,22 @@
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
       ~/.config/polybar-themes/setup.sh &
-      xrandr --output DP-4 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-4 --refresh 60.0 --mode 1920x1080 &
       nvidia-settings -a SyncToVBlank=0 &
       export __GL_SYNC_TO_VBLANK=0
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-                  xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -f -e&
+                  xss-lock --transfer-sleep-lock -- i3lock --nofork -c -i ~/Pictures/lock.png "#5f0f9f" -f -e&
                   flameshot &
-                  xwallpaper --maximize ~/Pictures/ml2.png & 
+                  xwallpaper --maximize ~/Pictures/pape.png & 
                 ~/.config/polybar/launch.sh --forest &
-        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/rustysnek/lunarvim/install.sh &
-
       ''
     ];
     package = pkgs.bspwm;
     monitors = {
-      DP-4 = [
+  
+ eDP-1 = [
         "I"
         "II"
         "III"
@@ -122,18 +120,7 @@
         "IX"
         "X"
       ];
-      HDMI-0 = [
-        "XI"
-        "XII"
-        "XIII"
-        "XIV"
-        "XV"
-        "XVI"
-        "XVII"
-        "XVIII"
-        "XIX"
-        "XX"
-      ];
+
     };
   };
 }
