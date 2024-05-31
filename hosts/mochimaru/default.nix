@@ -9,7 +9,7 @@
   imports = [
     (import ./disk.nix {
       inherit lib;
-      disks = ["/dev/sda"];
+      disks = ["/dev/nvme0n1"];
     })
     ./boot.nix
     ./persistence.nix

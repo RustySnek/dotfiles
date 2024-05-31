@@ -1,10 +1,6 @@
 {pkgs, ...}: {
   xdg = {
     enable = true;
-    configFile."nvim" = {
-      source = ./nvim-conf;
-      recursive = true;
-    };
   };
 
   home.packages = with pkgs; [

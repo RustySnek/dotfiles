@@ -1,0 +1,3 @@
+WRN 2024-05-31T23:22:40.664 ?.3199     server_start:164: Failed to start server: permission denied: /run/user/0/
+WRN 2024-05-31T23:23:12.340 ?.3224     server_start:164: Failed to start server: permission denied: /run/user/0/
+WRN 2024-05-31T23:23:20.327 ?.3252     server_start:164: Failed to start server: permission denied: /run/user/0/

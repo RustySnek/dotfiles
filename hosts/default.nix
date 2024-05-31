@@ -30,13 +30,6 @@ in {
       {
         nixpkgs.config.allowUnfreePredicate = _: true;
       }
-{
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
-  ];
-}
       impermanence.nixosModules.impermanence
       disko.nixosModules.disko
       nur.nixosModules.nur

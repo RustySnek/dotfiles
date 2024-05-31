@@ -33,7 +33,7 @@ in
     enable = true;
     layout = "us";
     libinput = {
-      enable = false;
+      enable = true;
     };
 
     desktopManager.xterm.enable = false;
