@@ -48,7 +48,7 @@
         "flake-compat": "flake-compat",
         "nix": "nix",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "pre-commit-hooks": "pre-commit-hooks"
       },

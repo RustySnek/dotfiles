@@ -5,7 +5,7 @@
     (pass.withExtensions (ext: with ext; [pass-otp]))
   ];
 
-  home.persistence."/nix/persist/home/poro".directories = [
+  home.persistence."/nix/persist/home/rustysnek".directories = [
     ".gnupg"
     ".password-store"
   ];

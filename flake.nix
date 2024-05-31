@@ -16,7 +16,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv";
-    devenv.inputs.nixpkgs.follows = "nixpkgs";
+    devenv.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     agenix.url = "github:ryantm/agenix";
   };
@@ -36,7 +36,7 @@
     agenix,
     ...
   }: let
-    user = "poro";
+    user = "rustysnek";
   in {
     nixosConfigurations = (
       import ./hosts {

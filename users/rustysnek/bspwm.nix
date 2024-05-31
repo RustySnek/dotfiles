@@ -67,12 +67,12 @@
   };
   services.sxhkd.enable = true;
   services.sxhkd.keybindings = {
-    "super + Return" = "kitty";
+    "super + Return" = "kitty ~";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
     "super + Up" = "brillo -A 5";
     "super + Down" = "brillo -U 5";
-    "super + alt + l" = "i3lock --nofork -c '#1f1f1f' -f -e";
+    "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
     "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
@@ -91,17 +91,18 @@
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-        LV_BRANCH='release-1.3/neovim-0.9' ~/Projects/dotfiles/users/poro/lunarvim/install.sh &
-             ~/.config/polybar-themes/setup.sh &
+
+     ~/.config/polybar-themes/setup.sh &
+      nvidia-settings -a SyncToVBlank=0 &
+      export __GL_SYNC_TO_VBLANK=0
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-          xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#1f1f1f" -f -e&
+          xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -i /home/rustysnek/Pictures/lock.png -f -e&
           flameshot &
           xwallpaper --stretch ~/Pictures/underwasser.jpg &
-          
-        ~/.config/polybar/launch.sh --blocks &
+          ~/.config/polybar/launch.sh --blocks &
       ''
     ];
     package = pkgs.bspwm;

@@ -18,7 +18,7 @@
     ...
   }: {nixpkgs.overlays = [unstableOverlay];};
 in {
-  stein = lib.nixosSystem {
+  mochimaru = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence devenv agenix;};
     modules = [
@@ -30,14 +30,14 @@ in {
       nur.nixosModules.nur
       agenix.nixosModules.default
       unstableModule
-      ./stein
+      ./mochimaru
       home-manager.nixosModules.home-manager
       {
         nixpkgs.overlays = [nur.overlay unstableOverlay];
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 
-        home-manager.users.poro = import ../users/poro;
+        home-manager.users.rustysnek = import ../users/rustysnek;
         home-manager.extraSpecialArgs = {
           inherit impermanence;
         };

@@ -73,7 +73,7 @@ services.udiskie.enable = true;
   xdg.enable = true;
   #xdg.configFile."polybar".enable = true;
   #xdg.configFile."polybar".source = ./polybar;
-  home.persistence."/nix/persist/home/poro" = {
+  home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
 ".local/share/docker"
       ".local/state/wireplumber"
