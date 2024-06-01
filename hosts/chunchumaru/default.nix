@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  devenv,
   agenix,
   pipewire-sa,
   ...
@@ -83,7 +82,7 @@ enable = true;
 
 };
   environment.systemPackages = with pkgs; [
-    devenv.packages.x86_64-linux.devenv
+    unstable.devenv
     agenix.packages.x86_64-linux.default
     (brave.override {
       commandLineArgs = [
