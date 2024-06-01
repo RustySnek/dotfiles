@@ -7,7 +7,6 @@
 
   programs.fish.enable = true;
   age.secrets.rustysnek.file = ../../secrets/rustysnek.age;
-  users.users.root.password = "1234";
   users.users.rustysnek = {
     hashedPasswordFile = config.age.secrets.rustysnek.path;
     isNormalUser = true;
