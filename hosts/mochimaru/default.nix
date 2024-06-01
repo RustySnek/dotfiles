@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  devenv,
   agenix,
   pipewire-sa,
   ...
@@ -83,7 +82,7 @@ enable = true;
 
 };
   environment.systemPackages = with pkgs; [
-    devenv.packages.x86_64-linux.devenv
+  unstable.devenv
     agenix.packages.x86_64-linux.default
     (brave.override {
       commandLineArgs = [
@@ -113,5 +112,5 @@ nix.settings.trusted-users = ["rustysnek"];
   nix.settings.trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   networking.hostName = "mochimaru";
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 }

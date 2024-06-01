@@ -5,7 +5,6 @@
   home-manager,
   impermanence,
   nur,
-  devenv,
   agenix,
   nixpkgs-unstable,
   ...
@@ -24,7 +23,7 @@
 in {
   mochimaru = lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = {inherit impermanence devenv agenix;};
+    specialArgs = {inherit impermanence agenix;};
     modules = [
       {nixpkgs.overlays = [pipewire-screenaudio-overlay];}
       {

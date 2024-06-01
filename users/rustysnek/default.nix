@@ -97,5 +97,5 @@ services.udiskie.enable = true;
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
 }
