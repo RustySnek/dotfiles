@@ -57,7 +57,7 @@ services.postgresql = {
   services.avahi.nssmdns = true;
   # for a WiFi printer
   services.avahi.openFirewall = true;
-
+  programs.hyprland.enable = true;
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -91,10 +91,13 @@ enable = true;
     })
     virt-manager
     powertop
+    openrgb-with-all-plugins
+    man-pages
+    man-pages-posix
     fzf
     jq
     (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
-  ];
+      ];
 
   fonts.packages = with pkgs; [
     migu
@@ -112,5 +115,5 @@ nix.settings.trusted-users = ["rustysnek"];
   nix.settings.trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   networking.hostName = "chunchumaru";
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 }

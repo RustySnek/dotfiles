@@ -10,7 +10,7 @@
   users.users.rustysnek = {
     hashedPasswordFile = config.age.secrets.rustysnek.path;
     isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input" "video"];
+    extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input" "video" "openrazer"];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = [
     ];

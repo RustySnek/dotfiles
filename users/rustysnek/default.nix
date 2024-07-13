@@ -18,6 +18,11 @@
   home.packages = with pkgs; [
     gotop
 nvidia-docker
+(openrazer-daemon.overrideAttrs (oldAttrs: {
+          nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [pkgs.gobject-introspection pkgs.wrapGAppsHook3 pkgs.python3Packages.wrapPython];
+        }))
+
+    polychromatic
 element-web
 wine
 jre8
@@ -28,11 +33,14 @@ zap
 inetutils
 john
 nmap
+autokey
 winetricks
 power-profiles-daemon
 picom
 krita
 gscreenshot
+osu-lazer
+p7zip
 lsof
 neofetch
 rust-analyzer
@@ -57,6 +65,7 @@ musikcube
     fd
     python310Packages.tree-sitter
     tree-sitter
+    opentabletdriver
     vimPlugins.nvim-treesitter
     ungoogled-chromium
     polybar
@@ -84,6 +93,7 @@ services.udiskie.enable = true;
       ".config/polybar-themes"
       ".config/lvim"
       ".local/share/lvim"
+      ".local/share/osu"
       ".local/bin"
       ".local/share/Steam"
       ".steam/"
@@ -97,5 +107,5 @@ services.udiskie.enable = true;
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
 }
