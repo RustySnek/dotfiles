@@ -49,15 +49,14 @@ services.postgresql = {
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  powerManagement.powertop.enable = false;
-  powerManagement.cpuFreqGovernor = "performance";
+  #powerManagement.powertop.enable = false;
+  #powerManagement.cpuFreqGovernor = "performance";
 
   services.printing.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer
   services.avahi.openFirewall = true;
-  programs.hyprland.enable = true;
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -77,10 +76,6 @@ services.postgresql = {
   virtualisation.libvirtd.qemu.ovmf.enable = true;
 virtualisation.docker.enableNvidia = true;
   programs.dconf.enable = true;
-programs.steam = {
-enable = true;
-
-};
   environment.systemPackages = with pkgs; [
     unstable.devenv
     agenix.packages.x86_64-linux.default
@@ -90,7 +85,6 @@ enable = true;
       ];
     })
     virt-manager
-    powertop
     openrgb-with-all-plugins
     man-pages
     man-pages-posix

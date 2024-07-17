@@ -2,7 +2,7 @@
   networking = {
   enableIPv6 = false;
   extraHosts = '''';
-    nameservers = ["127.0.0.1" "::1"];
+    nameservers = ["127.0.0.1"];
     networkmanager = {
       enable = true;
       dns = "none";
@@ -13,7 +13,7 @@
   services.dnscrypt-proxy2 = {
     enable = true;
     settings = {
-      ipv6_servers = true;
+      ipv6_servers = false;
       require_dnssec = true;
 
       sources.public-resolvers = {
