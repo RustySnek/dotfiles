@@ -71,6 +71,10 @@
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
     "super + alt + l" = "i3lock --nofork -c '#4ff28f' -i ~/Pictures/lock.png -f -e";
+    "ctrl + super + h" = "bspc node -z left -20 0; bspc node -z right -20 0";
+    "ctrl + super + l" = "bspc node -z left 20 0;bspc node -z right 20 0";
+    "ctrl + super + j" = "bspc node -z bottom 0 20; bspc node -z top 0 20";
+    "ctrl + super + k" = "bspc node -z bottom 0 -20; bspc node -z top 0 -20";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
     "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
@@ -81,13 +85,13 @@
   xsession.windowManager.bspwm = {
     enable = true;
     settings = {
-      border_width = 3;
+      border_width = 1;
       gapless_monocle = true;
       borderless_monocle = true;
       active_border_color = "#63B7B7";
       focused_border_color = "#23B7B7";
-      window_gap = 7.5;
-      split_ratio = 0.65;
+      window_gap = 0.25;
+      split_ratio = 0.5;
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
