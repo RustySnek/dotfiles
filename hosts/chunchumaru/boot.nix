@@ -28,8 +28,23 @@
     };
 
     desktopManager.xterm.enable = false;
-    windowManager.bspwm = {
-      enable = true;
+    windowManager.bspwm.enable = true;
+    windowManager.i3 = {
+      package = pkgs.i3-gaps;
+       configFile = ./i3.conf;
+     enable = true;
+           extraSessionCommands = ''
+     ~/.config/polybar-themes/setup.sh &
+      xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080 &
+      nvidia-settings -a SyncToVBlank=0 &
+      export __GL_SYNC_TO_VBLANK=0 &
+ xss-lock --transfer-sleep-lock -- i3lock --nofork -i /home/rustysnek/Pictures/ml2.png -c "#5f0f9f" -f -e&
+      xwallpaper --maximize ~/Pictures/pape.jpg & 
+      ~/.config/polybar/launch.sh --forest &
+      xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080
+
+      '';
+
     };
     displayManager = {
       defaultSession = "none+bspwm";

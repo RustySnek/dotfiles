@@ -91,6 +91,7 @@ virtualisation.docker.enableNvidia = true;
     fzf
     jq
     (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
+      librewolf
       ];
 
   fonts.packages = with pkgs; [

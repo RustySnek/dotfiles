@@ -25,6 +25,7 @@
       "Music"
       "Pictures"
       ".config/BraveSoftware"
+      ".config/retroarch"
       ".config/lutris"
       ".var/app/"
       ".mozilla"

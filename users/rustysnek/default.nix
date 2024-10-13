@@ -5,8 +5,9 @@
 }: {
   imports = [
     impermanence.nixosModules.home-manager.impermanence
-    ./bspwm.nix
     ./direnv.nix
+    #./i3.nix
+    ./bspwm.nix
     ./git.nix
     ./kitty.nix
     ./ssh.nix
@@ -21,12 +22,19 @@
   (openrazer-daemon.overrideAttrs (oldAttrs: {
         nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [pkgs.gobject-introspection pkgs.wrapGAppsHook3 pkgs.python3Packages.wrapPython];
       }))
+   (retroarch.override {
+    cores = with libretro; [
+      beetle-psx-hw
+      ppsspp
+    ];
+  })
   polychromatic
   wine
   jre8
   openvpn
   lutris
   exploitdb
+  macchanger
   zap
   inetutils
   john
