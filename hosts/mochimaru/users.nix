@@ -24,7 +24,6 @@
       "Documents"
       "Music"
       "Pictures"
-      ".config/BraveSoftware"
       ".config/lutris"
       ".var/app/"
       ".mozilla"

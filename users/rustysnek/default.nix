@@ -17,51 +17,44 @@
 
   home.packages = with pkgs; [
     gotop
-nvidia-docker
-element-web
-wine
-jre8
-openvpn
-lutris
-exploitdb
-zap
-inetutils
-john
-nmap
-winetricks
-power-profiles-daemon
-picom
-krita
-gscreenshot
-lsof
-neofetch
-rust-analyzer
-unzip
-yt-dlp
-ffmpeg-full
-glibc
-netcat-gnu
-wireshark
-gobuster
-metasploit
-musikcube
+    nvidia-docker
+    wine
+    jre8
+    openvpn
+    lutris
+    inetutils
+    nmap
+    winetricks
+    power-profiles-daemon
+    picom
+    krita
+    gscreenshot
+    lsof
+    neofetch
+    rust-analyzer
+    ouch
+    yt-dlp
+    ffmpeg-full
+    glibc
+    netcat-gnu
+    gobuster
+    metasploit
+    musikcube
     xclip
-    mysql
     wget
     xwallpaper
     xss-lock
     i3lock
     rofi
-    kazam
     dmenu
     fd
-    python310Packages.tree-sitter
+    python312Packages.tree-sitter
     tree-sitter
     vimPlugins.nvim-treesitter
     ungoogled-chromium
     polybar
-    python310Packages.pynvim
-    python310
+    python312Packages.pynvim
+    python312
     qbittorrent
     mpv
     ripgrep
@@ -69,24 +62,16 @@ musikcube
     xorg.xinit
   ];
 
-services.udiskie.enable = true;
+  services.udiskie.enable = true;
   xdg.enable = true;
-  #xdg.configFile."polybar".enable = true;
-  #xdg.configFile."polybar".source = ./polybar;
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
-".local/share/docker"
+      ".local/share/docker"
       ".local/state/wireplumber"
       ".config/rofi"
-      ".paddleocr/"
-      ".wine"
       ".config/polybar"
       ".config/polybar-themes"
-      ".config/lvim"
-      ".local/share/lvim"
       ".local/bin"
-      ".local/share/Steam"
-      ".steam/"
       ".local/share/lutris"
       ".local/share/qbittorrent"
       "Games"
@@ -97,5 +82,5 @@ services.udiskie.enable = true;
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
 }
