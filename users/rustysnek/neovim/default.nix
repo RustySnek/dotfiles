@@ -19,6 +19,12 @@
     gcc
   ];
 
+  home.file.".config/nvim" = {
+    force = true;
+    source = ./nvim;
+    recursive = false;
+  };
+
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
       ".local/share/nvim"

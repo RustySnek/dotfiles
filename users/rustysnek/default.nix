@@ -64,13 +64,23 @@
 
   services.udiskie.enable = true;
   xdg.enable = true;
+  home.file.".config/polybar-themes" = {
+    force = true;
+    source = ./polybar-themes;
+  };
+  home.file.".config/polybar" = {
+    force = true;
+    source = ./polybar;
+  };
+  home.file.".config/rofi" = {
+    force = true;
+    source = ./rofi;
+  };
+
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
       ".local/share/docker"
       ".local/state/wireplumber"
-      ".config/rofi"
-      ".config/polybar"
-      ".config/polybar-themes"
       ".local/bin"
       ".local/share/lutris"
       ".local/share/qbittorrent"
