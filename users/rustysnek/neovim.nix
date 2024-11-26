@@ -1,10 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   xdg = {
     enable = true;
   };
 
   home.packages = with pkgs; [
-    neovim
     alejandra
     black
     ruff
@@ -19,8 +19,6 @@
   ];
 
   home.persistence."/nix/persist/home/rustysnek" = {
-    directories = [
-      ".local/share/nvim"
-    ];
+    directories = [ ".local/share/nvim" ];
   };
 }

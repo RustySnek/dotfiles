@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   users.mutableUsers = false;
 
   programs.fish.enable = true;
@@ -10,10 +7,17 @@
   users.users.rustysnek = {
     hashedPasswordFile = config.age.secrets.rustysnek.path;
     isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd" "docker" "adbusers" "input" "video" "openrazer"];
-    shell = pkgs.fish;
-    openssh.authorizedKeys.keys = [
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+      "docker"
+      "adbusers"
+      "input"
+      "video"
+      "openrazer"
     ];
+    shell = pkgs.fish;
+    openssh.authorizedKeys.keys = [ ];
   };
 
   # these are host specific
@@ -24,7 +28,6 @@
       "Documents"
       "Music"
       "Pictures"
-      ".config/BraveSoftware"
       ".config/retroarch"
       ".config/lutris"
       ".var/app/"

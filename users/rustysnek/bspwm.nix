@@ -1,8 +1,5 @@
+{ pkgs, ... }:
 {
-  lib,
-  pkgs,
-  ...
-}: {
   xsession.enable = true;
   services.picom = {
     enable = true;
@@ -19,12 +16,10 @@
         "_GTK_FRAME_EXTENTS@:c"
       ];
       fading = true;
-      fade-in-step = 0.03;
-      fade-out-step = 0.03;
-      inactive-opacity = 0.95;
+      fade-in-step = 3.0e-2;
+      fade-out-step = 3.0e-2;
       frame-opacity = 0.9;
-      inactive-opacity-override = false;
-      focus-exclude = ["class_g = 'Cairo-clock'"];
+      focus-exclude = [ "class_g = 'Cairo-clock'" ];
       corner-radius = 0;
       rounded-corners-exclude = [
         "window_type = 'dock'"
@@ -59,9 +54,15 @@
           shadow = false;
           clip-shadow-above = true;
         };
-        dnd = {shadow = false;};
-        popup_menu = {opacity = 0.8;};
-        dropdown_menu = {opacity = 0.8;};
+        dnd = {
+          shadow = false;
+        };
+        popup_menu = {
+          opacity = 0.8;
+        };
+        dropdown_menu = {
+          opacity = 0.8;
+        };
       };
     };
   };
@@ -82,33 +83,30 @@
   xsession.windowManager.bspwm = {
     enable = true;
     settings = {
-      border_width = 3;
+      border_width = 0.5;
       gapless_monocle = true;
       borderless_monocle = true;
-      active_border_color = "#63B7B7";
-      focused_border_color = "#23B7B7";
-      window_gap = 7.5;
-      split_ratio = 0.65;
+      active_border_color = "#63B7F7";
+      focused_border_color = "#F3C7FF";
+      window_gap = 0.5;
+      split_ratio = 0.5;
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-      ~/.config/polybar-themes/setup.sh &
-      xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080 &
-      nvidia-settings -a SyncToVBlank=0 &
-      export __GL_SYNC_TO_VBLANK=0
+        ~/.config/polybar-themes/setup.sh &
+        xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080 &
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-      xss-lock --transfer-sleep-lock -- i3lock --nofork -i /home/rustysnek/Pictures/ml2.png -c "#5f0f9f" -f -e&
-      xwallpaper --maximize ~/Pictures/pape.jpg & 
-      ~/.config/polybar/launch.sh --forest &
-      xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080
+        xss-lock --transfer-sleep-lock -- i3lock --nofork -i /home/rustysnek/Pictures/ml2.png -c "#5f0f9f" -f -e&
+        xwallpaper --maximize ~/Pictures/pape.jpg & 
+        ~/.config/polybar/launch.sh --forest
       ''
     ];
     package = pkgs.bspwm;
     monitors = {
-      DP-2 = [
+      DP-4 = [
         "I"
         "II"
         "III"
@@ -128,9 +126,6 @@
         "XV"
         "XVI"
         "XVII"
-        "XVIII"
-        "XIX"
-        "XX"
       ];
     };
   };

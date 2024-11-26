@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   home.persistence."/nix/persist/home/rustysnek".files = [
     ".ssh/id_rsa"
     ".ssh/id_rsa.pub"

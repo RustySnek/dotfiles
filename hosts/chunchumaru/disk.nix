@@ -1,8 +1,9 @@
 {
   lib,
-  disks ? ["/dev/vda"],
+  disks ? [ "/dev/vda" ],
   ...
-}: {
+}:
+{
   disko.devices = {
     disk = lib.genAttrs disks (dev: {
       type = "disk";
@@ -10,14 +11,14 @@
       content = {
         type = "gpt";
         partitions = {
-         ESP = {
+          ESP = {
             size = "500M";
             type = "EF00";
             content = {
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot/EFI";
-              mountOptions = ["defaults"];
+              mountOptions = [ "defaults" ];
             };
           };
           luks = {
@@ -25,7 +26,7 @@
             content = {
               type = "luks";
               name = "cryptroot";
-              extraOpenArgs = ["--allow-discards"];
+              extraOpenArgs = [ "--allow-discards" ];
               passwordFile = "/tmp/secret.key";
               content = {
                 type = "lvm_pv";
@@ -46,7 +47,7 @@
               type = "filesystem";
               format = "ext4";
               mountpoint = "/nix";
-              mountOptions = ["defaults"];
+              mountOptions = [ "defaults" ];
             };
           };
         };
@@ -64,9 +65,7 @@
       };
       "/tmp" = {
         fsType = "tmpfs";
-        mountOptions = [
-          "size=4G"
-        ];
+        mountOptions = [ "size=4G" ];
       };
     };
   };

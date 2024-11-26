@@ -1,10 +1,12 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
        function fish_greeting
       if [ (tput cols) -ge 40 ]; and [ (tput lines) -ge 18 ]; ${pkgs.nitch}/bin/nitch; end
        end
+      fish_config theme choose Lava
     '';
     plugins = with pkgs.fishPlugins; [
       {
@@ -26,9 +28,7 @@
   };
 
   home.persistence."/nix/persist/home/rustysnek" = {
-    files = [
-      ".local/share/fish/fish_history"
-    ];
+    files = [ ".local/share/fish/fish_history" ];
   };
 
   programs.kitty.settings.shell = "${pkgs.fish}/bin/fish";
