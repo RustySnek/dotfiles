@@ -94,7 +94,7 @@
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
         ~/.config/polybar-themes/setup.sh &
-        xrandr --output DP-2 --primary --refresh 144.0 --mode 1920x1080 --output HDMI-0 --right-of DP-2 --refresh 60.0 --mode 1920x1080 &
+        xrandr --output HDMI-0 --primary --auto --left-of DP-4 --rate 144 --auto
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
@@ -106,7 +106,7 @@
     ];
     package = pkgs.bspwm;
     monitors = {
-      DP-4 = [
+      HDMI-0 = [
         "I"
         "II"
         "III"
@@ -118,7 +118,7 @@
         "IX"
         "X"
       ];
-      HDMI-0 = [
+      DP-4 = [
         "XI"
         "XII"
         "XIII"

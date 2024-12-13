@@ -34,6 +34,8 @@
     wine
     jre8
     openvpn
+    brave
+    heroic
     lutris
     exploitdb
     macchanger
@@ -70,7 +72,6 @@
     fd
     python311Packages.tree-sitter
     tree-sitter
-    opentabletdriver
     vimPlugins.nvim-treesitter
     polybar
     python311Packages.pynvim

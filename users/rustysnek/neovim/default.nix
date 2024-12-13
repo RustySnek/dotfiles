@@ -4,6 +4,11 @@
     enable = true;
   };
 
+  home.file.".config/nvim" = {
+    source = ./nvim-conf;
+    force = true;
+  };
+
   home.packages = with pkgs; [
     alejandra
     black

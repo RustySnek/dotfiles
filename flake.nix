@@ -2,6 +2,7 @@
   inputs = {
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-legacy.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -20,6 +21,7 @@
     inputs@{
       nixpkgs,
       nixpkgs-unstable,
+      nixpkgs-legacy,
       pipewire-screenaudio,
       home-manager,
       impermanence,
@@ -40,6 +42,7 @@
             inputs
             nixpkgs
             nixpkgs-unstable
+            nixpkgs-legacy
             home-manager
             impermanence
             disko

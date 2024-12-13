@@ -42,6 +42,10 @@
     '';
   };
   services.devmon.enable = true;
+  services.earlyoom = {
+    enable = true;
+    freeMemThreshold = 4;
+  };
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 

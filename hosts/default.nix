@@ -7,6 +7,7 @@
   nur,
   agenix,
   nixpkgs-unstable,
+  nixpkgs-legacy,
   nixpkgs,
   ...
 }:
@@ -23,10 +24,17 @@ in
       pipewire-screenaudio-overlay = final: prev: {
         pipewire-sa = pipewire-screenaudio.packages.${prev.system}.default;
       };
+      pkgs-legacy = import nixpkgs-unstable {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+
+      legacyOverlay = final: prev: { legacy = pkgs-legacy; };
       pkgs = import nixpkgs {
         system = "x86_64-linux";
         overlays = [
           unstableOverlay
+          legacyOverlay
           pipewire-screenaudio-overlay
         ];
         config = {
