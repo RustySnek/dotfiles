@@ -55,7 +55,7 @@
   };
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-
+  powerManagement.cpuFreqGovernor = "performance";
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   services.avahi.openFirewall = true;

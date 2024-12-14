@@ -10,9 +10,9 @@
         SUB_OPERATION="$3"
         if [[ "$GUEST_NAME" == "win11"* ]]; then
           if [[ "$OPERATION" == "started" ]]; then
-            systemctl set-property --runtime -- system.slice AllowedCPUs=6-10,18-22
-            systemctl set-property --runtime -- user.slice AllowedCPUs=6-10,18-22
-            systemctl set-property --runtime -- init.scope AllowedCPUs=6-10,18-22
+            systemctl set-property --runtime -- user.slice AllowedCPUs=0,8
+            systemctl set-property --runtime -- system.slice AllowedCPUs=0,8
+            systemctl set-property --runtime -- init.scope AllowedCPUs=0,8
           fi
           if [[ "$OPERATION" == "stopped" ]]; then
             systemctl set-property --runtime -- user.slice AllowedCPUs=0-23

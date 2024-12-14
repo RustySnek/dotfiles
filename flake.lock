@@ -48,11 +48,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1734182105,
-        "narHash": "sha256-F4SAqj2gBr7DHF3UZ99HRMABKkJnwrGAnUDKXOXJroU=",
+        "lastModified": 1734186590,
+        "narHash": "sha256-wJghyLukD9LEEiY+hlcckHnfbVO7jTdECpU5/20rh18=",
         "owner": "RustySnek",
         "repo": "deepcool-digital-linux",
-        "rev": "702556c349fa3ee3ba94db79764043419814f044",
+        "rev": "4ee8949902b49a4367ff188086ccfc86c9a5590d",
         "type": "github"
       },
       "original": {
@@ -279,11 +279,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1734181534,
-        "narHash": "sha256-sgYThqG03JhoAMS+fe9rZjtvtsn9M3webhzdc4sUViI=",
+        "lastModified": 1734184244,
+        "narHash": "sha256-tR3zf/kpRvgD6HK6P7gS9dU1L3ZSZfHzUdw9D8FYrRI=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "ea0d387462d43cfd6496d1241d69df2476db5ef3",
+        "rev": "cc04e1f2ef06dcff746205d460c2374466a2c463",
         "type": "github"
       },
       "original": {
