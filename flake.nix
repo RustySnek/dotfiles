@@ -1,6 +1,7 @@
 {
   inputs = {
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
+    deepcool.url = "github:RustySnek/deepcool-digital-linux/nix";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-legacy.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -27,6 +28,7 @@
       impermanence,
       disko,
       nur,
+      deepcool,
       agenix,
       ...
     }:
@@ -41,6 +43,7 @@
             pipewire-screenaudio
             inputs
             nixpkgs
+            deepcool
             nixpkgs-unstable
             nixpkgs-legacy
             home-manager

@@ -12,6 +12,8 @@
     })
     ./boot.nix
     ./persistence.nix
+    ./libvirt.nix
+    ./rgb.nix
     ./users.nix
     ./docker.nix
     ./gpg.nix
@@ -20,7 +22,12 @@
     ./audio.nix
     ./udev.nix
   ];
-
+  services.deepcool-digital = {
+    enable = true;
+    mode = "temp";
+    use_fahrenheit = false;
+    alarm = true;
+  };
   services.postgresql = {
     enable = true;
     ensureDatabases = [ "mydatabase" ];
@@ -49,9 +56,6 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  powerManagement.powertop.enable = false;
-  powerManagement.cpuFreqGovernor = "performance";
-
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   services.avahi.openFirewall = true;
@@ -64,9 +68,7 @@
   age.identityPaths = [ "/nix/persist/etc/ssh/ssh_host_ed25519_key" ];
   time.timeZone = "Europe/Warsaw";
 
-  virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemu.ovmf.enable = true;
-  virtualisation.docker.enableNvidia = true;
+  virtualisation.docker.enableNvidia = false;
   programs.dconf.enable = true;
   programs.gamemode.enable = true;
 

@@ -15,7 +15,6 @@
 
   home.packages = with pkgs; [
     gotop
-    nvidia-docker
     (openrazer-daemon.overrideAttrs (oldAttrs: {
       nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
         pkgs.gobject-introspection
@@ -86,6 +85,10 @@
   xdg.enable = true;
   #xdg.configFile."polybar".enable = true;
   #xdg.configFile."polybar".source = ./polybar;
+  home.file.".config/OpenRGB" = {
+    source = ./main.orp;
+    force = true;
+  };
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
       ".local/share/docker"
