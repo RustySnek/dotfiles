@@ -6,7 +6,7 @@ return {
 		lsp.lua_ls.setup({})
 		lsp.ts_ls.setup({})
 		lsp.nil_ls.setup({})
-    lsp.clangd.setup({})
+		lsp.clangd.setup({})
 
 		lsp.cssls.setup({})
 
@@ -15,6 +15,13 @@ return {
 			embeddedLanguages = {
 				css = true,
 				javascript = true,
+			},
+			settings = {
+				html = {
+					format = {
+						wrapLineLength = 80,
+					},
+				},
 			},
 			provideFormatter = true,
 		})

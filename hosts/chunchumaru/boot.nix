@@ -12,7 +12,7 @@
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.unstable.linuxPackages_6_12;
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
@@ -50,8 +50,8 @@
   };
 
   boot.extraModulePackages = with pkgs; [
-    linuxPackages_latest.v4l2loopback
-    linuxPackages_latest.kvmfr
+    unstable.linuxPackages_6_12.v4l2loopback
+    unstable.linuxPackages_6_12.kvmfr
   ];
 
   services.xserver.videoDrivers = [ "amdgpu" ];

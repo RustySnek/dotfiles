@@ -69,6 +69,7 @@
   services.sxhkd.enable = true;
   services.sxhkd.keybindings = {
     "super + Return" = "kitty ~";
+    "super + b" = "~/Projects/VM/toggle.sh";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
     "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
@@ -94,7 +95,7 @@
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
         ~/.config/polybar-themes/setup.sh &
-        openrgb --profile ~/.config/OpenRGB/main.orp &
+        openrgb --profile ~/Projects/dotfiles/users/rustysnek/main.orp &
         xrandr --output DisplayPort-0 --primary --auto --left-of HDMI-A-0 --rate 144 --auto
       ''
     ];

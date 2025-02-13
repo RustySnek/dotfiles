@@ -39,12 +39,20 @@
     exploitdb
     macchanger
     zap
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        looking-glass-obs
+        obs-websocket
+      ];
+    })
     inetutils
     john
     nmap
     winetricks
     picom
     krita
+    xournal
+    opentabletdriver
     gscreenshot
     p7zip
     pciutils
@@ -85,17 +93,16 @@
   xdg.enable = true;
   #xdg.configFile."polybar".enable = true;
   #xdg.configFile."polybar".source = ./polybar;
-  home.file.".config/OpenRGB" = {
-    source = ./main.orp;
-    force = true;
-  };
+
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [
       ".local/share/docker"
+      ".config/obs-studio"
       ".local/state/wireplumber"
       ".config/rofi"
       ".wine"
       ".config/polybar"
+      ".config/OpenTabletDriver"
       ".config/polybar-themes"
       ".local/share/lutris"
       ".local/share/qbittorrent"

@@ -32,16 +32,12 @@
   boot.kernelParams = [ "amd_iommu=on" ];
 
   boot.extraModprobeConfig = ''
-    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81
+    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,0d:00.0
     options snd_hda_intel power_save=0
   '';
 
   boot.blacklistedKernelModules = [
-    "nvidia"
     "nouveau"
-    "nvidia_drm"
-    "nvidia_modeset"
-    "nvidiafb"
   ];
   systemd.tmpfiles.rules = [ "f /dev/shm/looking-glass 0660 root libvirtd -" ];
   environment.systemPackages = with pkgs; [

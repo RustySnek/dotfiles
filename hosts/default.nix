@@ -3,6 +3,7 @@
   pipewire-screenaudio,
   disko,
   deepcool,
+  roxy,
   home-manager,
   impermanence,
   nur,
@@ -45,11 +46,17 @@ in
       };
 
       lookingGlassOverlay = final: prev: {
-        linuxPackages_latest = prev.linuxPackages_latest.extend (
+        linuxPackages_latest = prev.linuxPackages_6_12.extend (
           kfinal: kprev: {
-            kvmfr = prev.linuxPackages_latest.kvmfr.overrideAttrs (old: {
+            kvmfr = prev.linuxPackages_6_12.kvmfr.overrideAttrs (old: {
               patches = [
                 # fix build for linux-6_10
+                (prev.fetchpatch {
+                  url = "https://github.com/gnif/LookingGlass/commit/7740692e3000c2019e21b9861585960174dd5ddc.patch";
+                  hash = "";
+                  stripLen = 1;
+                })
+
                 (prev.fetchpatch {
                   url = "https://github.com/gnif/LookingGlass/commit/7305ce36af211220419eeab302ff28793d515df2.patch";
                   hash = "sha256-97nZsIH+jKCvSIPf1XPf3i8Wbr24almFZzMOhjhLOYk=";
@@ -75,6 +82,11 @@ in
               hash = "sha256-CqB8AmOZ4YxnEsQkyu/ZEaun6ywpSh4B7PM+MFJF0qU=";
               stripLen = 1;
             })
+            (prev.fetchpatch {
+              url = "https://github.com/gnif/LookingGlass/commit/7740692e3000c2019e21b9861585960174dd5ddc.patch";
+              hash = "";
+              stripLen = 1;
+            })
           ];
         });
       };
@@ -91,6 +103,7 @@ in
         nur.modules.nixos.default
         agenix.nixosModules.default
         deepcool.packages.${system}.nixosModule
+        roxy.packages.${system}.nixosModule
         home-manager.nixosModules.home-manager
         ./chunchumaru
         { imports = [ ../modules/kvmfr.nix ]; }

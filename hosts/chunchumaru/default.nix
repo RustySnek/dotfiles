@@ -22,6 +22,17 @@
     ./audio.nix
     ./udev.nix
   ];
+  services.roxy = {
+    enable = false;
+    port = "8080";
+    remote = "49.13.84.245";
+    remote-user = "elixirus_tunnel";
+    remote-port = "2137";
+    hosts = [
+      "synergia.librus.pl"
+      "api.librus.pl"
+    ];
+  };
   services.deepcool-digital = {
     enable = true;
     mode = "temp";
@@ -51,7 +62,7 @@
   services.devmon.enable = true;
   services.earlyoom = {
     enable = true;
-    freeMemThreshold = 4;
+    freeMemThreshold = 2;
   };
   services.gvfs.enable = true;
   services.udisks2.enable = true;
@@ -69,6 +80,7 @@
   time.timeZone = "Europe/Warsaw";
 
   virtualisation.docker.enableNvidia = false;
+  hardware.opentabletdriver.enable = true;
   programs.dconf.enable = true;
   programs.gamemode.enable = true;
 
@@ -83,8 +95,10 @@
     jq
     nixfmt-rfc-style
     nil
-    (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
-    (floorp.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
+    (unstable.firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
+    (floorp.override {
+      nativeMessagingHosts = [ pkgs.pipewire-sa ];
+    })
   ];
 
   fonts.packages = with pkgs; [
