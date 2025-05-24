@@ -22,6 +22,7 @@
     ./audio.nix
     ./udev.nix
   ];
+  security.pam.services.i3lock.enable = true;
   swapDevices = [
     { device = "/nix/persist/swapfile"; }
   ];
