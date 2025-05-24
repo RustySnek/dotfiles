@@ -29,8 +29,6 @@
       ln -sf ${qemuHook} /var/lib/libvirt/hooks/qemu
     '';
 
-  boot.kernelParams = [ "amd_iommu=on" ];
-
   boot.extraModprobeConfig = ''
     options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,0d:00.0
     options snd_hda_intel power_save=0
@@ -52,7 +50,6 @@
   ];
 
   boot.kernel.sysctl = {
-    "vm.nr_hugepages" = 0;
     "vm.nr_overcommit_hugepages" = 16384;
   };
 
@@ -71,7 +68,7 @@
       size = 128;
       user = "rustysnek";
       group = "libvirtd";
-      mode = "0600";
+      mode = "0666";
     };
   };
   environment.sessionVariables.LIBVIRT_DEFAULT_URI = [ "qemu:///system" ];
@@ -90,7 +87,7 @@
         "/dev/null", "/dev/full", "/dev/zero",
         "/dev/random", "/dev/urandom",
         "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
-        "/dev/rtc","/dev/hpet", "/dev/vfio/vfio", "/dev/kvmfr0"
+        "/dev/rtc","/dev/hpet", "/dev/vfio/vfio", "/dev/looking-glass"
     ]
   '';
 }

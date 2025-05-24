@@ -72,7 +72,7 @@
     "super + b" = "~/Projects/VM/toggle.sh";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
-    "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
+    "super + alt + l" = "i3lock --nofork -f -e -t -i /home/rustysnek/Pictures/lock.png -c '#4ff28f'";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
     "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
@@ -96,12 +96,13 @@
       ''
         ~/.config/polybar-themes/setup.sh &
         openrgb --profile ~/Projects/dotfiles/users/rustysnek/main.orp &
-        xrandr --output DisplayPort-0 --primary --auto --left-of HDMI-A-0 --rate 144 --auto
+        easyeffects -l main &
+        xrandr --output DisplayPort-0 --primary --auto --left-of HDMI-A-0 --rate 144 --auto && xrandr --output HDMI-A-0 --mode 1920x1080 --rate 144.00
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-        xss-lock --transfer-sleep-lock -- i3lock --nofork -i /home/rustysnek/Pictures/ml2.png -c "#5f0f9f" -f -e&
+        xss-lock --transfer-sleep-lock -- i3lock --nofork -t -i /home/rustysnek/Pictures/lock.png -c "#5f0f9f" -f -e&
         xwallpaper --maximize ~/Pictures/pape.jpg & 
         ~/.config/polybar/launch.sh --forest
       ''

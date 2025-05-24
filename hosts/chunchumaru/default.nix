@@ -22,17 +22,9 @@
     ./audio.nix
     ./udev.nix
   ];
-  services.roxy = {
-    enable = false;
-    port = "8080";
-    remote = "49.13.84.245";
-    remote-user = "elixirus_tunnel";
-    remote-port = "2137";
-    hosts = [
-      "synergia.librus.pl"
-      "api.librus.pl"
-    ];
-  };
+  swapDevices = [
+    { device = "/nix/persist/swapfile"; }
+  ];
   services.deepcool-digital = {
     enable = true;
     mode = "temp";
@@ -43,7 +35,7 @@
     enable = true;
     ensureDatabases = [ "mydatabase" ];
     enableTCPIP = true;
-    port = 5432;
+    settings.port = 5432;
     authentication = pkgs.lib.mkOverride 10 ''
 
       #...
@@ -68,7 +60,7 @@
   services.udisks2.enable = true;
   powerManagement.cpuFreqGovernor = "performance";
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
   services.avahi.openFirewall = true;
 
   services.flatpak.enable = true;
@@ -83,6 +75,7 @@
   hardware.opentabletdriver.enable = true;
   programs.dconf.enable = true;
   programs.gamemode.enable = true;
+  programs.command-not-found.enable = false;
 
   environment.systemPackages = with pkgs; [
     unstable.devenv
@@ -95,23 +88,22 @@
     jq
     nixfmt-rfc-style
     nil
-    (unstable.firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
-    (floorp.override {
-      nativeMessagingHosts = [ pkgs.pipewire-sa ];
-    })
+    floorp
   ];
 
-  fonts.packages = with pkgs; [
-    migu
-    baekmuk-ttf
-    quicksand
-    nanum
-    noto-fonts-emoji
-    twemoji-color-font
-    openmoji-color
-    twitter-color-emoji
-    nerdfonts
-  ];
+  fonts.packages =
+    with pkgs;
+    [
+      migu
+      baekmuk-ttf
+      quicksand
+      nanum
+      noto-fonts-emoji
+      twemoji-color-font
+      openmoji-color
+      twitter-color-emoji
+    ]
+    ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   nix.settings.trusted-users = [ "rustysnek" ];
   nix.settings.substituters = [
     "https://nix-community.cachix.org"
@@ -127,5 +119,5 @@
     "flakes"
   ];
   networking.hostName = "chunchumaru";
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

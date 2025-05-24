@@ -32,7 +32,7 @@ in
       };
       mode = mkOption {
         type = types.str;
-        default = "0600";
+        default = "0666";
         description = "Mode of the shared memory device.";
       };
     };
@@ -40,7 +40,7 @@ in
 
   config = mkIf cfg.enable {
     boot.extraModulePackages = with pkgs; [
-      unstable.linuxPackages_6_12.kvmfr
+      unstable.linuxKernel.packages.linux_zen.kvmfr
     ];
     boot.initrd.kernelModules = [ "kvmfr" ];
 
@@ -54,7 +54,7 @@ in
 
     environment.etc."looking-glass-client.ini".text = pkgs.lib.mkForce ''
       [app]
-      shmFile=/dev/kvmfr0
+      shmFile=/dev/shm/looking-glass
     '';
   };
 }

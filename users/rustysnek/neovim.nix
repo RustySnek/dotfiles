@@ -6,7 +6,7 @@
 
   home.packages = with pkgs; [
     alejandra
-    black
+    unstable.ruff
     ruff
     isort
     mypy

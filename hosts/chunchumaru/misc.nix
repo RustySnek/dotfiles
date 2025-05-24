@@ -4,7 +4,7 @@
     xdg-utils
     glib
     dracula-theme
-    gnome.adwaita-icon-theme
+    adwaita-icon-theme
   ];
 
   services.dbus.enable = true;

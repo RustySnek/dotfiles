@@ -20,6 +20,8 @@ return {
 				html = {
 					format = {
 						wrapLineLength = 80,
+						contentUnformatted = "pre",
+						enable = false,
 					},
 				},
 			},

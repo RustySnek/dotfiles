@@ -22,23 +22,16 @@
         pkgs.python3Packages.wrapPython
       ];
     }))
-    (retroarch.override {
-      cores = with libretro; [
-        beetle-psx-hw
-        ppsspp
-      ];
-    })
     unstable.qbittorrent
+    openssl
     polychromatic
     wine
     jre8
     openvpn
-    brave
     heroic
-    lutris
+    unstable.brave
     exploitdb
     macchanger
-    zap
     (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         looking-glass-obs
@@ -46,12 +39,14 @@
       ];
     })
     inetutils
+    unstable.easyeffects
+    upscayl
     john
     nmap
     winetricks
     picom
     krita
-    xournal
+    xournalpp
     opentabletdriver
     gscreenshot
     p7zip
@@ -100,6 +95,7 @@
       ".config/obs-studio"
       ".local/state/wireplumber"
       ".config/rofi"
+      ".config/easyeffects"
       ".wine"
       ".config/polybar"
       ".config/OpenTabletDriver"
@@ -112,5 +108,5 @@
   };
   home.sessionPath = [ "$HOME/.local/bin" ];
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

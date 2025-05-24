@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   boot.loader = {
     efi = {
@@ -12,7 +12,8 @@
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.kernelPackages = pkgs.unstable.linuxPackages_6_12;
+  boot.initrd.systemd.enable = true;
+  boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_zen;
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
@@ -30,28 +31,29 @@
     "vfio_iommu_type1"
     "vfio_pci"
   ];
-  boot.kernelParams = [ "amd_iommu=on" ];
+  boot.kernelParams = [
+    "amd_iommu=on"
+    "iommu=pt"
+  ];
   boot.initrd.checkJournalingFS = false;
   boot.initrd.luks.devices."cryptroot".preLVM = true;
+  services.libinput = {
+    enable = false;
+  };
   services.xserver = {
     enable = true;
-    layout = "us";
-    libinput = {
-      enable = false;
-    };
-
+    xkb.layout = "us";
     desktopManager.xterm.enable = false;
     windowManager.bspwm.enable = true;
-
-    displayManager = {
-      defaultSession = "none+bspwm";
-      lightdm.enable = true;
-    };
+    displayManager.lightdm.enable = true;
+  };
+  services.displayManager = {
+    defaultSession = "none+bspwm";
   };
 
   boot.extraModulePackages = with pkgs; [
-    unstable.linuxPackages_6_12.v4l2loopback
-    unstable.linuxPackages_6_12.kvmfr
+    unstable.linuxKernel.packages.linux_zen.v4l2loopback
+    unstable.linuxKernel.packages.linux_zen.kvmfr
   ];
 
   services.xserver.videoDrivers = [ "amdgpu" ];
@@ -59,7 +61,7 @@
   hardware.openrazer.users = [ "rustysnek" ];
 
   hardware.enableRedistributableFirmware = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.cpu.amd.updateMicrocode = true;
 }
