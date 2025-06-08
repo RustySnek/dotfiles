@@ -1,8 +1,5 @@
+{ pkgs, ... }:
 {
-  lib,
-  pkgs,
-  ...
-}: {
   xsession.enable = true;
   services.picom = {
     enable = true;
@@ -19,12 +16,10 @@
         "_GTK_FRAME_EXTENTS@:c"
       ];
       fading = true;
-      fade-in-step = 0.03;
-      fade-out-step = 0.03;
-      inactive-opacity = 0.95;
+      fade-in-step = 3.0e-2;
+      fade-out-step = 3.0e-2;
       frame-opacity = 0.9;
-      inactive-opacity-override = false;
-      focus-exclude = ["class_g = 'Cairo-clock'"];
+      focus-exclude = [ "class_g = 'Cairo-clock'" ];
       corner-radius = 0;
       rounded-corners-exclude = [
         "window_type = 'dock'"
@@ -59,40 +54,45 @@
           shadow = false;
           clip-shadow-above = true;
         };
-        dnd = {shadow = false;};
-        popup_menu = {opacity = 0.8;};
-        dropdown_menu = {opacity = 0.8;};
+        dnd = {
+          shadow = false;
+        };
+        popup_menu = {
+          opacity = 0.8;
+        };
+        dropdown_menu = {
+          opacity = 0.8;
+        };
       };
     };
   };
   services.sxhkd.enable = true;
   services.sxhkd.keybindings = {
     "super + Return" = "kitty ~";
+    "super + b" = "~/Projects/VM/toggle.sh";
     "Print" = "gscreenshot -sc";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
-    "super + alt + l" = "i3lock --nofork -c '#4ff28f' -i ~/Pictures/lock.png -f -e";
-    "ctrl + super + h" = "bspc node -z left -20 0; bspc node -z right -20 0";
-    "ctrl + super + l" = "bspc node -z left 20 0;bspc node -z right 20 0";
-    "ctrl + super + j" = "bspc node -z bottom 0 20; bspc node -z top 0 20";
-    "ctrl + super + k" = "bspc node -z bottom 0 -20; bspc node -z top 0 -20";
+    "super + alt + l" = "i3lock --nofork -c '#4ff28f' -f -e";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
     "super + x" = "bspc node -{c,k}";
     "super + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating, fullscreen}";
     "super + {_,shift + }{h,j,k,l}" = "bspc node -{f,s} {west,south,north,east}";
     "super + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{1-9,10}'";
+    "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11,12,13,14,15,16,17,18,19,20}'";
 
   };
   xsession.windowManager.bspwm = {
     enable = true;
-    settings = {
+ settings = {
+      focused_border_width = 1.5;
       border_width = 1;
       gapless_monocle = true;
       borderless_monocle = true;
-      active_border_color = "#63B7B7";
-      focused_border_color = "#23B7B7";
-      window_gap = 0.25;
+      active_border_color = "#F3a7fF";
+      focused_border_color = "#F3a7FF";
+      window_gap = 0.5;
       split_ratio = 0.5;
-    };
+    };  
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
       ~/.config/polybar-themes/setup.sh &
@@ -103,9 +103,8 @@
     extraConfig = builtins.concatStringsSep "\n" [
       ''
                   xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -i ~/Pictures/lock.png -f -e&
-                  flameshot &
-                  xwallpaper --maximize ~/Pictures/pape.png & 
-                ~/.config/polybar/launch.sh --forest &
+                  xwallpaper --maximize ~/Pictures/pape.png
+                  ~/.config/polybar/launch.sh --forest
       ''
     ];
     package = pkgs.bspwm;

@@ -1,6 +1,5 @@
 {
   lib,
-  pipewire-screenaudio,
   disko,
   home-manager,
   impermanence,
@@ -17,21 +16,17 @@
     pkgs,
     ...
   }: {nixpkgs.overlays = [unstableOverlay];};
- pipewire-screenaudio-overlay = final: prev: {
-    pipewire-sa = pipewire-screenaudio.packages.${prev.system}.default;
-  };
 in {
   mochimaru = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit impermanence agenix;};
     modules = [
-      {nixpkgs.overlays = [pipewire-screenaudio-overlay];}
       {
         nixpkgs.config.allowUnfreePredicate = _: true;
       }
       impermanence.nixosModules.impermanence
       disko.nixosModules.disko
-      nur.nixosModules.nur
+      nur.modules.nixos.default
       agenix.nixosModules.default
       unstableModule
       ./mochimaru

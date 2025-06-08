@@ -14,7 +14,6 @@
     ./gpg.nix
     ./neovim
   ];
-
   home.packages = with pkgs; [
     gotop
     nvidia-docker
@@ -92,5 +91,5 @@
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

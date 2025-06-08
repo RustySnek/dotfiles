@@ -5,6 +5,7 @@
        function fish_greeting
       if [ (tput cols) -ge 40 ]; and [ (tput lines) -ge 18 ]; ${pkgs.nitch}/bin/nitch; end
        end
+      fish_config theme choose "Snow Day"
     '';
     plugins = with pkgs.fishPlugins; [
       {

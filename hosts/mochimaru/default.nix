@@ -2,7 +2,6 @@
   lib,
   pkgs,
   agenix,
-  pipewire-sa,
   ...
 }: {
   imports = [
@@ -19,6 +18,13 @@
     ./misc.nix
     ./audio.nix
     ./udev.nix
+];
+
+swapDevices = [
+  {
+    device = "/nix/swapfile";
+    size = 16384;
+  }
 ];
 
 services.postgresql = {
@@ -45,8 +51,8 @@ services.postgresql = {
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-  powerManagement.powertop.enable = true;
-  powerManagement.cpuFreqGovernor = "ondemand";
+  powerManagement.powertop.enable = false;
+  powerManagement.cpuFreqGovernor = "performance";
 
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
@@ -62,14 +68,16 @@ services.postgresql = {
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
   virtualisation.docker.enableNvidia = true;
+  hardware.nvidia-container-toolkit.enable = true;
   environment.systemPackages = with pkgs; [
     unstable.devenv
     agenix.packages.x86_64-linux.default
     virt-manager
     powertop
+    nil
     fzf
     jq
-    (firefox.override { nativeMessagingHosts = [ pkgs.pipewire-sa ]; })
+    unstable.brave
   ];
 
   fonts.packages = with pkgs; [
@@ -88,5 +96,5 @@ services.postgresql = {
   nix.settings.trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
   nix.settings.experimental-features = ["nix-command" "flakes"];
   networking.hostName = "mochimaru";
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

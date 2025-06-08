@@ -27,6 +27,7 @@
       ".config/lutris"
       ".var/app/"
       ".mozilla"
+      ".config/BraveSoftware"
     ];
   };
 }

@@ -24,10 +24,11 @@ in
   };
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = ["nvme" "dm-snapshot" "i2c-dev" "i2c-piix4" "vfio" "vfio_iommu_type1" "vfio_pci" "nvidia"];
+  boot.initrd.kernelModules = ["nvme" "dm-snapshot" "i2c-dev" "i2c-piix4" "vfio" "vfio_iommu_type1" "vfio_pci"];
   boot.initrd.checkJournalingFS = false;
+  boot.initrd.systemd.enable = true;
   boot.initrd.luks.devices."cryptroot".preLVM = true;
   services.libinput.enable = true;
   services.xserver = {
@@ -43,34 +44,31 @@ in
     };
   };
 
-  boot.blacklistedKernelModules = ["nouveau" "nvidiafb" "amdgpu" "radeon" "intel_agp" "intel_atomisp"];
+  boot.blacklistedKernelModules = ["nouveau" "amdgpu" "radeon"];
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = ["intel_agp" "nvidia"];
 
- environment.systemPackages = [nvidia-offload];
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-    # Modesetting is required.
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      nvidiaBusId = "PCI:1:0:0";
-      intelBusId = "PCI:0:2:0";
-    };
-    modesetting.enable = true;
+environment.systemPackages = [nvidia-offload];
+ hardware.nvidia = {
+   # Modesetting is required.
+   prime = {
+     offload = {
+       enable = true;
+       enableOffloadCmd = true;
+     };
+     nvidiaBusId = "PCI:1:0:0";
+     intelBusId = "PCI:0:2:0";
+   };
+   modesetting.enable = true;
 
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-  };
+   powerManagement.enable = false;
+   powerManagement.finegrained = false;
+   open = false;
+   nvidiaSettings = true;
+ };
 
   hardware.enableRedistributableFirmware = true;
   hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.cpu.intel.updateMicrocode = true;
 }
- 
-
