@@ -81,6 +81,7 @@
   environment.systemPackages = with pkgs; [
     unstable.devenv
     unstable.neovim
+    unstable.code-cursor
     agenix.packages.x86_64-linux.default
     virt-manager
     man-pages
@@ -90,6 +91,7 @@
     nixfmt-rfc-style
     nil
     floorp
+    cifs-utils
   ];
 
   fonts.packages =

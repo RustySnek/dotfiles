@@ -23,10 +23,10 @@
       '';
     in
     ''
-      mkdir -p /var/lib/libvirt/hooks
-      chmod 755 /var/lib/libvirt/hooks
+      # mkdir -p /var/lib/libvirt/hooks
+      # chmod 755 /var/lib/libvirt/hooks
       # Copy hook files
-      ln -sf ${qemuHook} /var/lib/libvirt/hooks/qemu
+      # ln -sf ${qemuHook} /var/lib/libvirt/hooks/qemu
     '';
 
   boot.extraModprobeConfig = ''

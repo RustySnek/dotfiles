@@ -13,7 +13,7 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.systemd.enable = true;
-  boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_zen;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"

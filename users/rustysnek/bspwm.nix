@@ -70,7 +70,8 @@
   services.sxhkd.keybindings = {
     "super + Return" = "kitty ~";
     "super + b" = "~/Projects/VM/toggle.sh";
-    "Print" = "gscreenshot -sc";
+    # "Print" = "gscreenshot -sc";
+    "Print" = "flameshot gui";
     "super + @space" = "~/.config/rofi/launchers/type-5/launcher.sh";
     "super + alt + l" = "i3lock --nofork -f -e -t -i /home/rustysnek/Pictures/lock.png -c '#4ff28f'";
     "ctrl + super + {q,r}" = "bspc {quit, wm -r}";
@@ -103,7 +104,8 @@
     extraConfig = builtins.concatStringsSep "\n" [
       ''
         xss-lock --transfer-sleep-lock -- i3lock --nofork -t -i /home/rustysnek/Pictures/lock.png -c "#5f0f9f" -f -e&
-        xwallpaper --maximize ~/Pictures/pape.jpg & 
+        flameshot &
+        xwallpaper --stretch ~/Pictures/pape.jpg & 
         ~/.config/polybar/launch.sh --forest
       ''
     ];

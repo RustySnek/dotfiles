@@ -25,19 +25,20 @@ in
         config.allowUnfree = true;
       };
       legacyOverlay = final: prev: { legacy = pkgs-legacy; };
-      pkgs = import nixpkgs {
+      pkgsImp = import nixpkgs {
         system = "x86_64-linux";
         overlays = [
           unstableOverlay
           legacyOverlay
         ];
+        config.allowUnfree = true;
         config = {
-          allowUnfree = true;
           allowUnfreePredicate = _: true;
         };
       };
     in
     lib.nixosSystem rec {
+      pkgs = pkgsImp;
       system = "x86_64-linux";
       specialArgs = {
         inherit impermanence agenix;

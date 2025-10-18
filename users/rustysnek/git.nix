@@ -2,6 +2,7 @@
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
     signing = {
       signByDefault = true;
       key = "0x68A31460574C24D5";

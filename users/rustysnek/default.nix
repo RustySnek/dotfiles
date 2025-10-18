@@ -15,6 +15,7 @@
 
   home.packages = with pkgs; [
     gotop
+    xdotool
     (openrazer-daemon.overrideAttrs (oldAttrs: {
       nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
         pkgs.gobject-introspection
@@ -23,6 +24,7 @@
       ];
     }))
     unstable.qbittorrent
+    flameshot
     openssl
     polychromatic
     wine
@@ -32,16 +34,21 @@
     unstable.brave
     exploitdb
     macchanger
+    moonlight-qt
     (pkgs.wrapOBS {
-      plugins = with pkgs.obs-studio-plugins; [
-        looking-glass-obs
-        obs-websocket
+      plugins = with pkgs; [
+        obs-studio-plugins.looking-glass-obs
+        obs-studio-plugins.obs-websocket
+        unstable.obs-studio-plugins.obs-ndi
       ];
     })
     inetutils
     unstable.easyeffects
+    tenacity
     upscayl
+    mupdf
     john
+    libsForQt5.kdenlive
     nmap
     winetricks
     picom
@@ -56,7 +63,7 @@
     neofetch
     rust-analyzer
     unzip
-    yt-dlp
+    unstable.yt-dlp
     ffmpeg-full
     glibc
     netcat-gnu
@@ -95,6 +102,9 @@
       ".config/obs-studio"
       ".local/state/wireplumber"
       ".config/rofi"
+      ".config/xournalpp"
+      ".config/Moonlight\ Game\ Streaming\ Project"
+      ".config/WebCord"
       ".config/easyeffects"
       ".wine"
       ".config/polybar"

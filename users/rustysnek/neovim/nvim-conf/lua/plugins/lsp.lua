@@ -7,6 +7,7 @@ return {
 		lsp.ts_ls.setup({})
 		lsp.nil_ls.setup({})
 		lsp.clangd.setup({})
+		lsp.terraformls.setup({})
 
 		lsp.cssls.setup({})
 

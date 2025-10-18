@@ -4,11 +4,10 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			-- Conform will run multiple formatters sequentially
-			python = { "ruff" },
+			python = { "black" },
 			-- Use a sub-list to run only the first available formatter
 			javascript = { "prettierd" },
 			typescript = { "prettierd" },
-			html = { "prettierd" },
 			htmlangular = { "prettierd" },
 			css = { "prettierd" },
 			scss = { "prettierd" },
