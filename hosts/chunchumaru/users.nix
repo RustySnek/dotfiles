@@ -12,6 +12,7 @@
       "libvirtd"
       "docker"
       "adbusers"
+      "kvm"
       "input"
       "video"
       "openrazer"

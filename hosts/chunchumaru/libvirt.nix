@@ -45,7 +45,7 @@
     unstable.OVMFFull
     pciutils
     swtpm
-    win-virtio
+    virtio-win
     quickemu
   ];
 
@@ -56,8 +56,9 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu = {
     swtpm.enable = true;
-    ovmf.enable = true;
-    ovmf.packages = [ pkgs.unstable.OVMFFull.fd ];
+    #ovmf.enable = true;
+    #ovmf.packages = [ pkgs.unstable.OVMFFull.fd ];
+    vhostUserPackages = with pkgs; [ virtiofsd ];
     runAsRoot = false;
     package = pkgs.qemu_kvm;
   };

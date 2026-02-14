@@ -33,13 +33,15 @@
     heroic
     unstable.brave
     exploitdb
+    unstable.claude-code
+    unstable.gemini-cli
     macchanger
+    discord
     moonlight-qt
     (pkgs.wrapOBS {
       plugins = with pkgs; [
         obs-studio-plugins.looking-glass-obs
         obs-studio-plugins.obs-websocket
-        unstable.obs-studio-plugins.obs-ndi
       ];
     })
     inetutils
@@ -48,7 +50,7 @@
     upscayl
     mupdf
     john
-    libsForQt5.kdenlive
+    kdePackages.kdenlive
     nmap
     winetricks
     picom
@@ -105,6 +107,7 @@
       ".config/xournalpp"
       ".config/Moonlight\ Game\ Streaming\ Project"
       ".config/WebCord"
+      ".config/Cursor"
       ".config/easyeffects"
       ".wine"
       ".config/polybar"
@@ -113,10 +116,11 @@
       ".local/share/lutris"
       ".local/share/qbittorrent"
       "Games"
+      ".claude"
     ];
     allowOther = true;
   };
   home.sessionPath = [ "$HOME/.local/bin" ];
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }

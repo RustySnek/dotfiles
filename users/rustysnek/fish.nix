@@ -15,7 +15,7 @@
       }
     ];
     shellAliases = {
-      "du" = "${pkgs.du-dust}/bin/dust";
+      "du" = "${pkgs.dust}/bin/dust";
       "ls" = "${pkgs.unstable.eza}/bin/eza --icons";
       "la" = "${pkgs.unstable.eza}/bin/eza --icons -la --extended --git";
       "cat" = "${pkgs.bat}/bin/bat";

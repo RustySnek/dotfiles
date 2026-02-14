@@ -8,19 +8,19 @@
   imports = [
     (import ./disk.nix {
       inherit lib;
-      disks = [ "/dev/nvme0n1" ];
+      disks = [ "/dev/nvme1n1" ];
     })
     ./boot.nix
-    ./persistence.nix
-    ./libvirt.nix
-    ./rgb.nix
-    ./users.nix
-    ./docker.nix
-    ./gpg.nix
-    ./network.nix
-    ./misc.nix
-    ./audio.nix
-    ./udev.nix
+    ../chunchumaru/persistence.nix
+    ../chunchumaru/libvirt.nix
+    ../chunchumaru/rgb.nix
+    ../chunchumaru/users.nix
+    ../chunchumaru/docker.nix
+    ../chunchumaru/gpg.nix
+    ../chunchumaru/network.nix
+    ../chunchumaru/misc.nix
+    ../chunchumaru/audio.nix
+    ../chunchumaru/udev.nix
   ];
   security.pam.services.i3lock.enable = true;
   swapDevices = [

@@ -1,17 +1,23 @@
 return {
 	"neovim/nvim-lspconfig",
 	config = function()
-		local lsp = require("lspconfig")
-		lsp.pyright.setup({})
-		lsp.lua_ls.setup({})
-		lsp.ts_ls.setup({})
-		lsp.nil_ls.setup({})
-		lsp.clangd.setup({})
-		lsp.terraformls.setup({})
+		vim.lsp.config("pyright", {})
+		vim.lsp.enable("pyright")
+		vim.lsp.config("lua_ls", {})
+		vim.lsp.enable("lua_ls")
+		vim.lsp.config("ts_ls", {})
+		vim.lsp.enable("ts_ls")
+		vim.lsp.config("nil_ls", {})
+		vim.lsp.enable("nil_ls")
+		vim.lsp.config("clangd", {})
+		vim.lsp.enable("clangd")
+		vim.lsp.config("terraformls", {})
+		vim.lsp.enable("terraformls")
 
-		lsp.cssls.setup({})
+		vim.lsp.config("cssls", {})
+		vim.lsp.enable("cssls")
 
-		lsp.html.setup({
+		vim.lsp.config("html", {
 			configurationSection = { "html", "css", "javascript", "heex" },
 			embeddedLanguages = {
 				css = true,
@@ -28,5 +34,6 @@ return {
 			},
 			provideFormatter = true,
 		})
+		vim.lsp.enable("html")
 	end,
 }

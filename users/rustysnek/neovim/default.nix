@@ -26,5 +26,6 @@
 
   home.persistence."/nix/persist/home/rustysnek" = {
     directories = [ ".local/share/nvim" ];
+    files = [ ".ssh/cyberskiller-testing" ];
   };
 }
