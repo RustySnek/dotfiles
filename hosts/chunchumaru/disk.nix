@@ -1,6 +1,6 @@
 {
   lib,
-  disks ? [ "/dev/vda" ],
+  disks ? [ "/dev/nvme1n1" ],
   ...
 }:
 {
@@ -25,12 +25,12 @@
             size = "100%";
             content = {
               type = "luks";
-              name = "cryptroot";
+              name = "cryptroot-backup";
               extraOpenArgs = [ "--allow-discards" ];
               passwordFile = "/tmp/secret.key";
               content = {
                 type = "lvm_pv";
-                vg = "pool";
+                vg = "pool-backup";
               };
             };
           };
@@ -38,7 +38,7 @@
       };
     });
     lvm_vg = {
-      pool = {
+      pool-backup = {
         type = "lvm_vg";
         lvs = {
           root = {

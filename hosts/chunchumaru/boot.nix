@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   boot.loader = {
     efi = {
@@ -10,10 +10,9 @@
       configurationLimit = 20;
     };
   };
-
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.systemd.enable = true;
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+  boot.kernelPackages = pkgs.unstable.linuxKernel.packages.linux_zen;
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
@@ -36,32 +35,9 @@
     "iommu=pt"
   ];
   boot.initrd.checkJournalingFS = false;
-  boot.initrd.luks.devices."cryptroot".preLVM = true;
-  services.libinput = {
-    enable = false;
-  };
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    desktopManager.xterm.enable = false;
-    windowManager.bspwm.enable = true;
-    displayManager.lightdm.enable = true;
-  };
-  services.displayManager = {
-    defaultSession = "none+bspwm";
-  };
-
-  boot.extraModulePackages = with pkgs; [
-    unstable.linuxKernel.packages.linux_zen.v4l2loopback
-    unstable.linuxKernel.packages.linux_zen.kvmfr
+  boot.initrd.luks.devices."cryptroot-backup".preLVM = true;
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+    kvmfr
   ];
-
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  hardware.openrazer.enable = true;
-  hardware.openrazer.users = [ "rustysnek" ];
-
-  hardware.enableRedistributableFirmware = true;
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
-  hardware.cpu.amd.updateMicrocode = true;
 }

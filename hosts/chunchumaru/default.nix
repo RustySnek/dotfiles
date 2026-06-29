@@ -8,19 +8,19 @@
   imports = [
     (import ./disk.nix {
       inherit lib;
-      disks = [ "/dev/nvme0n1" ];
+      disks = [ "/dev/nvme1n1" ];
     })
     ./boot.nix
+    ./display.nix
+    ./peripherals.nix
     ./persistence.nix
     ./libvirt.nix
-    ./rgb.nix
     ./users.nix
     ./docker.nix
     ./gpg.nix
     ./network.nix
     ./misc.nix
     ./audio.nix
-    ./udev.nix
   ];
   security.pam.services.i3lock.enable = true;
   swapDevices = [
@@ -53,6 +53,9 @@
     '';
   };
   services.devmon.enable = true;
+  services.tailscale = {
+    enable = true;
+  };
   services.earlyoom = {
     enable = true;
     freeMemThreshold = 2;
@@ -76,10 +79,14 @@
   hardware.opentabletdriver.enable = true;
   programs.dconf.enable = true;
   programs.gamemode.enable = true;
-  programs.adb.enable = true;
   programs.command-not-found.enable = false;
 
   environment.systemPackages = with pkgs; [
+    kdePackages.dolphin
+    kdePackages.qt6ct
+    kdePackages.ffmpegthumbs
+    kdePackages.kdegraphics-thumbnailers
+    android-tools
     unstable.devenv
     unstable.neovim
     unstable.code-cursor
@@ -123,5 +130,5 @@
     "flakes"
   ];
   networking.hostName = "chunchumaru";
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

@@ -24,7 +24,7 @@
     gcc
   ];
 
-  home.persistence."/nix/persist/home/rustysnek" = {
+  home.persistence."/nix/persist" = {
     directories = [ ".local/share/nvim" ];
     files = [ ".ssh/cyberskiller-testing" ];
   };

@@ -22,12 +22,12 @@
       "df" = "${pkgs.duf}/bin/duf";
       "ps" = "${pkgs.procs}/bin/procs";
       "curl" = "${pkgs.curlie}/bin/curlie";
-      "dig" = "${pkgs.dogdns}/bin/dog";
+      "dig" = "${pkgs.doggo}/bin/doggo";
       "cp" = "${pkgs.xcp}/bin/xcp";
     };
   };
 
-  home.persistence."/nix/persist/home/rustysnek" = {
+  home.persistence."/nix/persist" = {
     files = [ ".local/share/fish/fish_history" ];
   };
 

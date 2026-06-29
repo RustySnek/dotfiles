@@ -1,5 +1,6 @@
 { ... }:
 {
+  environment.etc.hosts.mode = "0644";
   networking.useDHCP = true;
   networking.dhcpcd.wait = "background";
   networking.nameservers = [ "1.1.1.1" ];

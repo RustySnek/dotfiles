@@ -30,14 +30,14 @@
     '';
 
   boot.extraModprobeConfig = ''
-    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,0d:00.0
+    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,c0a9:2263,10de:2f04,10de:2f80
     options snd_hda_intel power_save=0
   '';
 
   boot.blacklistedKernelModules = [
     "nouveau"
   ];
-  systemd.tmpfiles.rules = [ "f /dev/shm/looking-glass 0660 root libvirtd -" ];
+  systemd.tmpfiles.rules = [ "f /dev/shm/looking-glass 0666 root libvirtd -" ];
   environment.systemPackages = with pkgs; [
     virt-manager
     looking-glass-client
@@ -50,7 +50,7 @@
   ];
 
   boot.kernel.sysctl = {
-    "vm.nr_overcommit_hugepages" = 16384;
+    "vm.nr_overcommit_hugepages" = 24576;
   };
 
   virtualisation.libvirtd.enable = true;

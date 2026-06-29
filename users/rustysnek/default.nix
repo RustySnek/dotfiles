@@ -1,9 +1,7 @@
 { pkgs, impermanence, ... }:
 {
   imports = [
-    impermanence.nixosModules.home-manager.impermanence
     ./direnv.nix
-    #./i3.nix
     ./bspwm.nix
     ./git.nix
     ./kitty.nix
@@ -29,13 +27,15 @@
     polychromatic
     wine
     jre8
+    tailscale
     openvpn
-    heroic
     unstable.brave
     exploitdb
     unstable.claude-code
+    unstable.codex
     unstable.gemini-cli
     macchanger
+    nextcloud-client
     discord
     moonlight-qt
     (pkgs.wrapOBS {
@@ -62,8 +62,8 @@
     pciutils
     usbutils
     lsof
-    neofetch
     rust-analyzer
+    fastfetch
     unzip
     unstable.yt-dlp
     ffmpeg-full
@@ -98,7 +98,7 @@
   #xdg.configFile."polybar".enable = true;
   #xdg.configFile."polybar".source = ./polybar;
 
-  home.persistence."/nix/persist/home/rustysnek" = {
+  home.persistence."/nix/persist" = {
     directories = [
       ".local/share/docker"
       ".config/obs-studio"
@@ -111,6 +111,7 @@
       ".config/easyeffects"
       ".wine"
       ".config/polybar"
+      ".config/NextCloud"
       ".config/OpenTabletDriver"
       ".config/polybar-themes"
       ".local/share/lutris"
@@ -118,9 +119,8 @@
       "Games"
       ".claude"
     ];
-    allowOther = true;
   };
   home.sessionPath = [ "$HOME/.local/bin" ];
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 }

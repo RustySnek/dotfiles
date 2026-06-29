@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 {
   users.mutableUsers = false;
-
   programs.fish.enable = true;
   age.secrets.rustysnek.file = ../../secrets/rustysnek.age;
   users.users.rustysnek = {
@@ -29,10 +28,7 @@
       "Documents"
       "Music"
       "Pictures"
-      ".config/retroarch"
-      ".config/lutris"
       ".var/app/"
-      ".mozilla"
       ".config/BraveSoftware"
     ];
   };

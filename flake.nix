@@ -1,18 +1,13 @@
 {
   inputs = {
     deepcool.url = "github:RustySnek/deepcool-digital-linux/nix";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
     impermanence.url = "github:nix-community/impermanence";
-
-    nur.url = "github:nix-community/NUR";
-
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-
     agenix.url = "github:ryantm/agenix";
   };
 
@@ -23,7 +18,6 @@
       home-manager,
       impermanence,
       disko,
-      nur,
       deepcool,
       agenix,
       ...
@@ -44,7 +38,6 @@
             impermanence
             disko
             user
-            nur
             agenix
             ;
         }
