@@ -17,6 +17,9 @@ return {
 		vim.lsp.config("cssls", {})
 		vim.lsp.enable("cssls")
 
+		vim.lsp.config("dartls", {})
+		vim.lsp.enable("dartls")
+
 		vim.lsp.config("html", {
 			configurationSection = { "html", "css", "javascript", "heex" },
 			embeddedLanguages = {

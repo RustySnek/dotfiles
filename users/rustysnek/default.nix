@@ -9,6 +9,7 @@
     ./fish.nix
     ./gpg.nix
     ./neovim
+    ./tt_download.nix
   ];
 
   home.packages = with pkgs; [
@@ -25,6 +26,15 @@
     flameshot
     openssl
     polychromatic
+    (symlinkJoin {
+      name = "element-desktop-wrapped";
+      paths = [ element-desktop ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/element-desktop \
+          --add-flags "--password-store=gnome-libsecret"
+      '';
+    })
     wine
     jre8
     tailscale
@@ -32,6 +42,7 @@
     unstable.brave
     exploitdb
     unstable.claude-code
+    vesktop
     unstable.codex
     unstable.gemini-cli
     macchanger
@@ -45,7 +56,9 @@
       ];
     })
     inetutils
-    unstable.easyeffects
+    (unstable.easyeffects.override {
+      deepfilternet = unstable.deepfilternet; # pulls whatever version is in your current nixpkgs pin
+    })
     tenacity
     upscayl
     mupdf
@@ -103,6 +116,9 @@
       ".local/share/docker"
       ".config/obs-studio"
       ".local/state/wireplumber"
+      ".config/vesktop"
+      ".config/Element"
+      ".local/share/keyrings"
       ".config/rofi"
       ".config/xournalpp"
       ".config/Moonlight\ Game\ Streaming\ Project"
@@ -112,6 +128,7 @@
       ".wine"
       ".config/polybar"
       ".config/NextCloud"
+      ".config/Nextcloud"
       ".config/OpenTabletDriver"
       ".config/polybar-themes"
       ".local/share/lutris"

@@ -23,6 +23,8 @@
     ./audio.nix
   ];
   security.pam.services.i3lock.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
+  services.gnome.gnome-keyring.enable = true;
   swapDevices = [
     { device = "/nix/persist/swapfile"; }
   ];
