@@ -29,6 +29,17 @@
     picom
     krita
     gscreenshot
+    flameshot
+    unstable.brave
+    # CLI/system utils
+    xdotool
+    unzip
+    p7zip
+    openssl
+    pciutils
+    usbutils
+    fastfetch
+    tailscale
     lsof
     rust-analyzer
     ouch
