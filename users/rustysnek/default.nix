@@ -10,6 +10,7 @@
     ./gpg.nix
     ./neovim
     ./tt_download.nix
+    ./yt_music.nix
   ];
 
   home.packages = with pkgs; [
