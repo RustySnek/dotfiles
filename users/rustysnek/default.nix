@@ -2,9 +2,9 @@
   pkgs,
   impermanence,
   ...
-}: {
+}:
+{
   imports = [
-    impermanence.nixosModules.home-manager.impermanence
     ./bspwm.nix
     ./direnv.nix
     ./git.nix
@@ -16,9 +16,10 @@
   ];
   home.packages = with pkgs; [
     gotop
-    nvidia-docker
+    #nvidia-docker
     wine
     jre8
+    nextcloud-client
     openvpn
     lutris
     inetutils
@@ -29,9 +30,10 @@
     krita
     gscreenshot
     lsof
-    neofetch
     rust-analyzer
     ouch
+    unstable.claude-code
+    unstable.gemini-cli
     yt-dlp
     ffmpeg-full
     glibc
@@ -76,7 +78,7 @@
     source = ./rofi;
   };
 
-  home.persistence."/nix/persist/home/rustysnek" = {
+  home.persistence."/nix/persist" = {
     directories = [
       ".local/share/docker"
       ".local/state/wireplumber"
@@ -86,10 +88,9 @@
       "Games"
       ".cache/huggingface"
     ];
-    allowOther = true;
   };
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
 }

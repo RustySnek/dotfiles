@@ -8,8 +8,12 @@
   nixpkgs-unstable,
   ...
 }: let
+  pkgsUnstable = import nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
   unstableOverlay = final: prev: {
-    unstable = nixpkgs-unstable.legacyPackages.${prev.system};
+    unstable = pkgsUnstable; 
   };
   unstableModule = {
     config,
@@ -32,7 +36,7 @@ in {
       ./mochimaru
       home-manager.nixosModules.home-manager
       {
-        nixpkgs.overlays = [nur.overlay unstableOverlay];
+        nixpkgs.overlays = [nur.overlays.default unstableOverlay];
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 

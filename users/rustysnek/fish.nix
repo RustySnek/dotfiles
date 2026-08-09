@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -14,19 +15,19 @@
       }
     ];
     shellAliases = {
-      "du" = "${pkgs.du-dust}/bin/dust";
+      "du" = "${pkgs.dust}/bin/dust";
       "ls" = "${pkgs.unstable.eza}/bin/eza --icons";
       "la" = "${pkgs.unstable.eza}/bin/eza --icons -la --extended --git";
       "cat" = "${pkgs.bat}/bin/bat";
       "df" = "${pkgs.duf}/bin/duf";
       "ps" = "${pkgs.procs}/bin/procs";
       "curl" = "${pkgs.curlie}/bin/curlie";
-      "dig" = "${pkgs.dogdns}/bin/dog";
+      "dig" = "${pkgs.doggo}/bin/doggo";
       "cp" = "${pkgs.xcp}/bin/xcp";
     };
   };
 
-  home.persistence."/nix/persist/home/rustysnek" = {
+  home.persistence."/nix/persist" = {
     files = [
       ".local/share/fish/fish_history"
     ];

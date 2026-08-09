@@ -20,6 +20,7 @@ keymap("n", "<C-s>", ":w<CR>", { noremap = true })
 keymap("n", "<A-n>", ":Neogit<CR>", opts)
 keymap("n", "<Leader>v", ":vs<CR>", opts)
 keymap("n", "<C-h>", ":Telescope colorscheme<CR>", opts)
+keymap("n", "gd", ":lua vim.lsp.buf.definition()<CR>", opts)
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize -2<CR>", opts)

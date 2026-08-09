@@ -83,7 +83,7 @@
   };
   xsession.windowManager.bspwm = {
     enable = true;
- settings = {
+    settings = {
       focused_border_width = 1.5;
       border_width = 1;
       gapless_monocle = true;
@@ -92,25 +92,24 @@
       focused_border_color = "#F3a7FF";
       window_gap = 0.5;
       split_ratio = 0.5;
-    };  
+    };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-      ~/.config/polybar-themes/setup.sh &
-      nvidia-settings -a SyncToVBlank=0 &
-      export __GL_SYNC_TO_VBLANK=0
+        ~/.config/polybar-themes/setup.sh &
+        export __GL_SYNC_TO_VBLANK=0
       ''
     ];
     extraConfig = builtins.concatStringsSep "\n" [
       ''
-                  xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -i ~/Pictures/lock.png -f -e&
-                  xwallpaper --maximize ~/Pictures/pape.png
-                  ~/.config/polybar/launch.sh --forest
+        xss-lock --transfer-sleep-lock -- i3lock --nofork -c "#5f0f9f" -i ~/Pictures/lock.png -f -e&
+        xwallpaper --maximize ~/Pictures/pape.png
+        ~/.config/polybar/launch.sh --forest
       ''
     ];
     package = pkgs.bspwm;
     monitors = {
-  
- eDP-1 = [
+
+      eDP-1 = [
         "I"
         "II"
         "III"
