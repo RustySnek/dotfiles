@@ -96,9 +96,19 @@ in
   ];
 
   services.xserver.videoDrivers = [
-    "intel"
+    "modesetting"
     "nvidia"
   ];
+
+  # Bind the modesetting driver to the Intel iGPU and disable glamor.
+  # glamor's EGL init gets dispatched to NVIDIA's GBM external-platform
+  # library (libnvidia-egl-gbm) and segfaults on the Intel GBM device.
+  # AccelMethod "none" removes that path; bspwm needs no 2D accel and
+  # GL apps still run via nvidia-offload with their own EGL/GLX.
+  services.xserver.deviceSection = ''
+    BusID "PCI:0:2:0"
+    Option "AccelMethod" "none"
+  '';
 
   environment.systemPackages = [ nvidia-offload ];
   hardware.nvidia = {
@@ -120,7 +130,7 @@ in
   };
 
   hardware.enableRedistributableFirmware = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.cpu.intel.updateMicrocode = true;
 }
