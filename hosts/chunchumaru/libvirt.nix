@@ -31,6 +31,7 @@
 
   boot.extraModprobeConfig = ''
     options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,c0a9:2263,10de:2f04,10de:2f80
+    softdep nvme pre: vfio-pci
     options snd_hda_intel power_save=0
   '';
 

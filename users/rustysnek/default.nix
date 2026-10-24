@@ -5,12 +5,15 @@
     ./bspwm.nix
     ./git.nix
     ./kitty.nix
+    ./fastfetch.nix
+    ./eza.nix
     ./ssh.nix
     ./fish.nix
     ./gpg.nix
     ./neovim
     ./tt_download.nix
     ./yt_music.nix
+    ./mpv.nix
   ];
 
   home.packages = with pkgs; [
@@ -44,6 +47,7 @@
     exploitdb
     unstable.claude-code
     vesktop
+    gromit-mpx
     unstable.codex
     unstable.gemini-cli
     macchanger
@@ -73,6 +77,7 @@
     opentabletdriver
     gscreenshot
     p7zip
+    gimp
     pciutils
     usbutils
     lsof
@@ -101,7 +106,6 @@
     polybar
     python311Packages.pynvim
     python311
-    mpv
     ripgrep
     flatpak
     xorg.xinit
@@ -136,6 +140,10 @@
       ".local/share/qbittorrent"
       "Games"
       ".claude"
+      # GIMP 3.0: settings, brushes/plug-ins, and crash-recovery drafts (3.0/backups)
+      ".config/GIMP"
+      # GIMP swap/tile cache (gimprc swap-path defaults to the cache dir)
+      ".cache/gimp"
     ];
   };
   home.sessionPath = [ "$HOME/.local/bin" ];

@@ -8,6 +8,9 @@
     };
     settings = {
       confirm_os_window_close = 0;
+      # Leftover pixels (window height % cell height) go below the grid instead
+      # of splitting above/below, so the fetch image sits flush with the top.
+      placement_strategy = "top";
     };
     extraConfig = builtins.concatStringsSep "\n" [
       ''
