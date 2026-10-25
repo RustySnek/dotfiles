@@ -1,0 +1,68 @@
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -376,6 +376,16 @@
+     }
+ }
+ 
++static bool x86_machine_get_waet(Object *obj, Error **errp)
++{
++    return X86_MACHINE(obj)->waet_enabled;
++}
++
++static void x86_machine_set_waet(Object *obj, bool value, Error **errp)
++{
++    X86_MACHINE(obj)->waet_enabled = value;
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -385,6 +395,7 @@
+     x86ms->pit = ON_OFF_AUTO_AUTO;
+     x86ms->pic = ON_OFF_AUTO_AUTO;
+     x86ms->pci_irq_mask = ACPI_BUILD_PCI_IRQS;
++    x86ms->waet_enabled = true;
+     x86ms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+     x86ms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     x86ms->bus_lock_ratelimit = 0;
+@@ -436,6 +447,11 @@
+     object_class_property_set_description(oc, "x-pci-irq5-override",
+         "Emit the legacy PCI IRQ5 MADT source override");
+ 
++    object_class_property_add_bool(oc, "x-waet",
++        x86_machine_get_waet, x86_machine_set_waet);
++    object_class_property_set_description(oc, "x-waet",
++        "Include the Windows ACPI Emulated Devices Table");
++
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+                                   x86_machine_set_oem_id);
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -70,6 +70,7 @@
+ 
+     /* CPU and apic information: */
+     unsigned pci_irq_mask;
++    bool waet_enabled;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+     SgxEPCList *sgx_epc_list;
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2076,8 +2076,11 @@
+                        x86ms->oem_id, x86ms->oem_table_id, &pcms->cxl_devices_state);
+     }
+ 
+-    acpi_add_table(table_offsets, tables_blob);
+-    build_waet(tables_blob, tables->linker, x86ms->oem_id, x86ms->oem_table_id);
++    if (x86ms->waet_enabled) {
++        acpi_add_table(table_offsets, tables_blob);
++        build_waet(tables_blob, tables->linker, x86ms->oem_id,
++                   x86ms->oem_table_id);
++    }
+ 
+     /* Add tables supplied by user (if any) */
+     for (u = acpi_table_first(); u; u = acpi_table_next(u)) {

@@ -1,0 +1,15 @@
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -161,8 +161,9 @@
+                         (1 << ACPI_FADT_F_FORCE_APIC_CLUSTER_MODEL) : 0),
+         .int_model = 1 /* Multiple APIC */,
+         .rtc_century = RTC_CENTURY,
+-        .plvl2_lat = 0xfff /* C2 state not supported */,
+-        .plvl3_lat = 0xfff /* C3 state not supported */,
++        /* Values above 100/1000 still advertise unsupported C2/C3. */
++        .plvl2_lat = 101 /* C2 state not supported */,
++        .plvl3_lat = 1001 /* C3 state not supported */,
+         .smi_cmd = smm_enabled ? ACPI_PORT_SMI_CMD : 0,
+         .sci_int = object_property_get_uint(o, ACPI_PM_PROP_SCI_INT, NULL),
+         .acpi_enable_cmd =

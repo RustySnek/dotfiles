@@ -1,0 +1,32 @@
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -77,6 +77,8 @@
+ 
+ static const Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
++    DEFINE_PROP_BOOL("x-default-subsystem-id", PCIDevice,
++                     default_subsystem_id, true),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+     DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, UINT32_MAX),
+     DEFINE_PROP_INT32("rombar",  PCIDevice, rom_bar, -1),
+@@ -954,6 +956,10 @@
+ 
+ static void pci_set_default_subsystem_id(PCIDevice *pci_dev)
+ {
++    /* Leave unspecified subsystem IDs zero when explicitly requested. */
++    if (!pci_dev->default_subsystem_id) {
++        return;
++    }
+     pci_set_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID,
+                  pci_default_sub_vendor_id);
+     pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID,
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -59,6 +59,7 @@
+ 
+ struct PCIDevice {
+     DeviceState qdev;
++    bool default_subsystem_id;
+     bool partially_hotplugged;
+     bool enabled;
+ 

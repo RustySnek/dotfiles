@@ -1,0 +1,48 @@
+Subject: [PATCH] KVM: SVM: intercept ICEBP before injecting its debug trap
+
+Backport of upstream commit ec9a16c6aeba, authored by David Woodhouse and
+committed by Sean Christopherson:
+https://github.com/torvalds/linux/commit/ec9a16c6aeba
+
+Adapted to the configured zen source; abbreviated explanatory comment.
+Advance RIP at the instruction intercept before injecting #DB, preserving
+trap semantics across subsequent exception-delivery exits. This is separate
+from the optional #DB interception experiment and leaves that option alone.
+
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1179,6 +1179,7 @@
+ 	svm_set_intercept(svm, INTERCEPT_SKINIT);
+ 	svm_set_intercept(svm, INTERCEPT_WBINVD);
+ 	svm_set_intercept(svm, INTERCEPT_XSETBV);
++	svm_set_intercept(svm, INTERCEPT_ICEBP);
+ 	svm_set_intercept(svm, INTERCEPT_RDPRU);
+ 	svm_set_intercept(svm, INTERCEPT_RSM);
+ 
+@@ -2079,6 +2080,18 @@
+ 	kvm_run->debug.arch.pc = svm->vmcb->save.cs.base + svm->vmcb->save.rip;
+ 	kvm_run->debug.arch.exception = BP_VECTOR;
+ 	return 0;
++}
++
++static int icebp_interception(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * Convert the instruction intercept's fault semantics to an ICEBP
++	 * trap before injecting #DB. SVM does not otherwise provide enough
++	 * information to recover the post-ICEBP RIP after a task switch.
++	 */
++	svm_skip_emulated_instruction(vcpu);
++	kvm_queue_exception(vcpu, DB_VECTOR);
++	return 1;
+ }
+ 
+ static int ud_interception(struct kvm_vcpu *vcpu)
+@@ -3395,6 +3408,7 @@
+ 	[SVM_EXIT_MONITOR]			= kvm_emulate_monitor,
+ 	[SVM_EXIT_MWAIT]			= kvm_emulate_mwait,
+ 	[SVM_EXIT_XSETBV]			= kvm_emulate_xsetbv,
++	[SVM_EXIT_ICEBP]			= icebp_interception,
+ 	[SVM_EXIT_RDPRU]			= kvm_handle_invalid_op,
+ 	[SVM_EXIT_EFER_WRITE_TRAP]		= efer_trap,
+ 	[SVM_EXIT_CR0_WRITE_TRAP]		= cr_trap,

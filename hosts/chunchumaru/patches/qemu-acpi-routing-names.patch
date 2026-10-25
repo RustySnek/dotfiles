@@ -1,0 +1,26 @@
+Subject: [PATCH] i386/acpi: use a distinct name for APIC PCI routing package
+
+Based on QEMU v10.2.4. Rename the generated APIC-mode AML package and
+its _PRT reference together. The routing entries and IRQ behavior stay
+unchanged; the Q35 AML no longer exposes the paired PRTP/PRTA names.
+
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -743,7 +743,7 @@ static void build_q35_pci0_int(Aml *table)
+     aml_append(pci0_scope,
+         aml_name_decl("PRTP", build_q35_routing_table("LNK")));
+     aml_append(pci0_scope,
+-        aml_name_decl("PRTA", build_q35_routing_table("GSI")));
++        aml_name_decl("IRQA", build_q35_routing_table("GSI")));
+ 
+     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+     {
+@@ -758,7 +758,7 @@ static void build_q35_pci0_int(Aml *table)
+         aml_append(if_ctx, aml_return(aml_name("PRTP")));
+         aml_append(method, if_ctx);
+         else_ctx = aml_else();
+-        aml_append(else_ctx, aml_return(aml_name("PRTA")));
++        aml_append(else_ctx, aml_return(aml_name("IRQA")));
+         aml_append(method, else_ctx);
+     }
+     aml_append(pci0_scope, method);

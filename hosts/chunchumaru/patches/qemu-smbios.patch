@@ -1,0 +1,25 @@
+Subject: [PATCH] smbios: use desktop chassis and default VM indicator off
+
+Based on QEMU v10.2.4. An explicit type=0,vm=on still overrides the
+default. Applies to all VMs using this patched QEMU package.
+
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -656,7 +656,7 @@
+     SMBIOS_BUILD_TABLE_PRE(3, T3_BASE, true); /* required */
+ 
+     SMBIOS_TABLE_SET_STR(3, manufacturer_str, type3.manufacturer);
+-    t->type = 0x01; /* Other */
++    t->type = 0x03; /* Desktop: matches this host chassis. */
+     SMBIOS_TABLE_SET_STR(3, version_str, type3.version);
+     SMBIOS_TABLE_SET_STR(3, serial_number_str, type3.serial);
+     SMBIOS_TABLE_SET_STR(3, asset_tag_number_str, type3.asset);
+@@ -1413,7 +1413,7 @@
+             save_opt(&smbios_type0.version, opts, "version");
+             save_opt(&smbios_type0.date, opts, "date");
+             smbios_type0.uefi = qemu_opt_get_bool(opts, "uefi", false);
+-            smbios_type0.vm = qemu_opt_get_bool(opts, "vm", true);
++            smbios_type0.vm = qemu_opt_get_bool(opts, "vm", false);
+ 
+             val = qemu_opt_get(opts, "release");
+             if (val) {

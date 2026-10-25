@@ -1,0 +1,74 @@
+Subject: [PATCH] x86/KVM: opt-in skip of guest #DB interception
+
+Requires the experimental AMD KVM patches (native-CPUID adds the per-VM
+KVM_X86_DISABLE_EXITS experiment, this patch is applied after it). Default
+off. QEMU refuses the option on kernels without the per-VM capability.
+
+--- a/hw/i386/x86.c	2026-10-25 01:50:12.398739691 +0200
++++ b/hw/i386/x86.c	2026-10-25 01:50:27.941418720 +0200
+@@ -416,6 +416,16 @@
+     X86_MACHINE(obj)->native_cpuid = value;
+ }
+ 
++static bool x86_machine_get_skip_db_intercept(Object *obj, Error **errp)
++{
++    return X86_MACHINE(obj)->skip_db_intercept;
++}
++
++static void x86_machine_set_skip_db_intercept(Object *obj, bool value, Error **errp)
++{
++    X86_MACHINE(obj)->skip_db_intercept = value;
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -499,6 +509,11 @@
+     object_class_property_set_description(oc, "x-native-cpuid",
+         "Experimental: execute raw host CPUID without a KVM VM exit");
+ 
++    object_class_property_add_bool(oc, "x-skip-db-intercept",
++        x86_machine_get_skip_db_intercept, x86_machine_set_skip_db_intercept);
++    object_class_property_set_description(oc, "x-skip-db-intercept",
++        "Experimental: stop intercepting guest #DB on a trusted AMD VM");
++
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+                                   x86_machine_set_oem_id);
+--- a/include/hw/i386/x86.h	2026-10-25 01:50:12.401598228 +0200
++++ b/include/hw/i386/x86.h	2026-10-25 01:50:27.944431616 +0200
+@@ -74,6 +74,7 @@
+     bool strict_instruction_faults;
+     bool acpi_pit_device;
+     bool native_cpuid;
++    bool skip_db_intercept;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+     SgxEPCList *sgx_epc_list;
+--- a/target/i386/kvm/kvm.c	2026-10-25 01:50:12.404382007 +0200
++++ b/target/i386/kvm/kvm.c	2026-10-25 01:50:27.947204255 +0200
+@@ -3305,6 +3305,24 @@
+         }
+     }
+ 
++    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
++        X86_MACHINE(ms)->skip_db_intercept) {
++        /* Keep this local until the experimental kernel UAPI is upstream. */
++        const int db_bit = 1 << 6;
++        int supported_db_exits = kvm_check_extension(s, KVM_CAP_X86_DISABLE_EXITS);
++
++        if (!(supported_db_exits & db_bit)) {
++            error_report("kvm: x-skip-db-intercept requires patched AMD KVM");
++            return -ENOTSUP;
++        }
++        ret = kvm_vm_enable_cap(s, KVM_CAP_X86_DISABLE_EXITS, 0, db_bit);
++        if (ret < 0) {
++            error_report("kvm: failed to disable #DB intercept: %s",
++                         strerror(-ret));
++            return ret;
++        }
++    }
++
+     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
+     has_sregs2 = kvm_check_extension(s, KVM_CAP_SREGS2) > 0;
+ 

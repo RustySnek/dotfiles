@@ -140,6 +140,7 @@
       ".local/share/qbittorrent"
       "Games"
       ".claude"
+      ".codex"
       # GIMP 3.0: settings, brushes/plug-ins, and crash-recovery drafts (3.0/backups)
       ".config/GIMP"
       # GIMP swap/tile cache (gimprc swap-path defaults to the cache dir)

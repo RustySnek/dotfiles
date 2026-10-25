@@ -1,0 +1,75 @@
+Subject: [PATCH] x86/KVM: opt-in raw CPUID machine property
+
+Requires the matching experimental AMD KVM patch. Default off. QEMU
+refuses the option on kernels without the per-VM capability. Anchored
+after the x-acpi-pit-device machine property so the local patch stack
+applies in order.
+
+--- a/hw/i386/x86.c	2026-10-25 01:49:55.697023670 +0200
++++ b/hw/i386/x86.c	2026-10-25 01:50:12.398739691 +0200
+@@ -406,6 +406,16 @@
+     X86_MACHINE(obj)->acpi_pit_device = value;
+ }
+ 
++static bool x86_machine_get_native_cpuid(Object *obj, Error **errp)
++{
++    return X86_MACHINE(obj)->native_cpuid;
++}
++
++static void x86_machine_set_native_cpuid(Object *obj, bool value, Error **errp)
++{
++    X86_MACHINE(obj)->native_cpuid = value;
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -484,6 +494,11 @@
+     object_class_property_set_description(oc, "x-acpi-pit-device",
+         "Declare the existing i8254 PIT as an ACPI PNP0100 device");
+ 
++    object_class_property_add_bool(oc, "x-native-cpuid",
++        x86_machine_get_native_cpuid, x86_machine_set_native_cpuid);
++    object_class_property_set_description(oc, "x-native-cpuid",
++        "Experimental: execute raw host CPUID without a KVM VM exit");
++
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+                                   x86_machine_set_oem_id);
+--- a/include/hw/i386/x86.h	2026-10-25 01:49:55.699750512 +0200
++++ b/include/hw/i386/x86.h	2026-10-25 01:50:12.401598228 +0200
+@@ -73,6 +73,7 @@
+     bool waet_enabled;
+     bool strict_instruction_faults;
+     bool acpi_pit_device;
++    bool native_cpuid;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+     SgxEPCList *sgx_epc_list;
+--- a/target/i386/kvm/kvm.c	2026-10-25 01:49:55.702607325 +0200
++++ b/target/i386/kvm/kvm.c	2026-10-25 01:50:12.404382007 +0200
+@@ -3287,6 +3287,24 @@
+         }
+     }
+ 
++    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
++        X86_MACHINE(ms)->native_cpuid) {
++        /* Keep this local until the experimental kernel UAPI is upstream. */
++        const int cpuid_bit = 1 << 5;
++        int supported_exits = kvm_check_extension(s, KVM_CAP_X86_DISABLE_EXITS);
++
++        if (!(supported_exits & cpuid_bit)) {
++            error_report("kvm: x-native-cpuid requires patched AMD KVM");
++            return -ENOTSUP;
++        }
++        ret = kvm_vm_enable_cap(s, KVM_CAP_X86_DISABLE_EXITS, 0, cpuid_bit);
++        if (ret < 0) {
++            error_report("kvm: failed to disable CPUID exits: %s",
++                         strerror(-ret));
++            return ret;
++        }
++    }
++
+     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
+     has_sregs2 = kvm_check_extension(s, KVM_CAP_SREGS2) > 0;
+ 

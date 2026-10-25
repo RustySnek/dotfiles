@@ -1,0 +1,82 @@
+Subject: [PATCH] x86 ACPI: opt-in declaration of the existing i8254 PIT
+
+Based on QEMU v10.2.4 after local ACPI and strict-fault patches. The
+machine property defaults off; when on and the PIT exists, the DSDT
+advertises its real I/O ports and IRQ as PNP0100 for guest PnP.
+
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -396,6 +396,16 @@
+     X86_MACHINE(obj)->strict_instruction_faults = value;
+ }
+ 
++static bool x86_machine_get_acpi_pit_device(Object *obj, Error **errp)
++{
++    return X86_MACHINE(obj)->acpi_pit_device;
++}
++
++static void x86_machine_set_acpi_pit_device(Object *obj, bool value, Error **errp)
++{
++    X86_MACHINE(obj)->acpi_pit_device = value;
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -467,6 +477,12 @@
+         x86_machine_set_strict_instruction_faults);
+     object_class_property_set_description(oc, "x-strict-instruction-faults",
+         "Disable KVM legacy hypercall instruction fixing for this VM");
++
++    object_class_property_add_bool(oc, "x-acpi-pit-device",
++        x86_machine_get_acpi_pit_device,
++        x86_machine_set_acpi_pit_device);
++    object_class_property_set_description(oc, "x-acpi-pit-device",
++        "Declare the existing i8254 PIT as an ACPI PNP0100 device");
+ 
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -72,6 +72,7 @@
+     unsigned pci_irq_mask;
+     bool waet_enabled;
+     bool strict_instruction_faults;
++    bool acpi_pit_device;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+     SgxEPCList *sgx_epc_list;
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -433,6 +433,21 @@
+     aml_append(table, scope);
+ }
+ 
++static void build_pit_aml(Aml *table)
++{
++    Aml *scope = aml_scope("_SB");
++    Aml *dev = aml_device("TMR0");
++    Aml *crs = aml_resource_template();
++
++    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0100")));
++    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
++    aml_append(crs, aml_io(AML_DECODE16, 0x40, 0x40, 1, 4));
++    aml_append(crs, aml_irq_no_flags(0));
++    aml_append(dev, aml_name_decl("_CRS", crs));
++    aml_append(scope, dev);
++    aml_append(table, scope);
++}
++
+ static Aml *build_vmbus_device_aml(VMBusBridge *vmbus_bridge)
+ {
+     Aml *dev;
+@@ -940,6 +955,9 @@
+ 
+     if (misc->has_hpet) {
+         build_hpet_aml(dsdt);
++    }
++    if (x86ms->acpi_pit_device && x86ms->pit != ON_OFF_AUTO_OFF) {
++        build_pit_aml(dsdt);
+     }
+ 
+     if (vmbus_bridge) {

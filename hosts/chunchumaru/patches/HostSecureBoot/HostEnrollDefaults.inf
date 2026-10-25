@@ -1,0 +1,29 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = HostEnrollDefaults
+  FILE_GUID = 8fb99743-0868-4234-a27c-847eb75e92a4
+  MODULE_TYPE = UEFI_APPLICATION
+  ENTRY_POINT = UefiMain
+
+[Sources]
+  HostEnrollDefaults.c
+  HostDefaults.h
+  HostDefaultData.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  SecureBootVariableLib
+  SecureBootVariableProvisionLib
+
+[Guids]
+  gEfiGlobalVariableGuid
+  gEfiImageSecurityDatabaseGuid

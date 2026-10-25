@@ -1,0 +1,26 @@
+--- a/hw/pci-bridge/gen_pcie_root_port.c
++++ b/hw/pci-bridge/gen_pcie_root_port.c
+@@ -153,8 +153,8 @@
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+     PCIERootPortClass *rpc = PCIE_ROOT_PORT_CLASS(klass);
+ 
+-    k->vendor_id = PCI_VENDOR_ID_REDHAT;
+-    k->device_id = PCI_DEVICE_ID_REDHAT_PCIE_RP;
++    k->vendor_id = PCI_VENDOR_ID_AMD;
++    k->device_id = 0x14db; /* Raphael/Granite Ridge GPP bridge on this host */
+     dc->desc = "PCI Express Root Port";
+     dc->vmsd = &vmstate_rp_dev;
+     device_class_set_props(dc, gen_rp_props);
+--- a/hw/pci-bridge/pcie_pci_bridge.c
++++ b/hw/pci-bridge/pcie_pci_bridge.c
+@@ -143,8 +143,8 @@
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
+ 
+-    k->vendor_id = PCI_VENDOR_ID_REDHAT;
+-    k->device_id = PCI_DEVICE_ID_REDHAT_PCIE_BRIDGE;
++    k->vendor_id = PCI_VENDOR_ID_AMD;
++    k->device_id = 0x43f4; /* AMD 600 Series chipset switch upstream port */
+     k->realize = pcie_pci_bridge_realize;
+     k->exit = pcie_pci_bridge_exit;
+     k->config_write = pcie_pci_bridge_write_config;

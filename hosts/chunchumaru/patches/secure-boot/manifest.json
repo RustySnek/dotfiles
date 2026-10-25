@@ -1,0 +1,96 @@
+{
+  "source": "physical host efivarfs",
+  "captured": "2026-10-24",
+  "variables": {
+    "PK": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 39,
+      "payload_bytes": 640,
+      "sha256": "d484f06547ab750320ffca10b852ccd6ff48d51aefa2d1bfa1667d0c7b7ba438",
+      "marker_hits": []
+    },
+    "KEK": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 39,
+      "payload_bytes": 1560,
+      "sha256": "8599624905e4fa11b379471f80f870369cc046d1ed45fefe540072a6784934bf",
+      "marker_hits": []
+    },
+    "db": {
+      "guid": "d719b2cb-3d3a-4596-a3bc-dad00e67656f",
+      "attributes": 39,
+      "payload_bytes": 3143,
+      "sha256": "5dbc0253a9bb2a84e03522cfc37a3b5be3b1088ecfcd753d08f1425cdef2b5c1",
+      "marker_hits": []
+    },
+    "dbx": {
+      "guid": "d719b2cb-3d3a-4596-a3bc-dad00e67656f",
+      "attributes": 39,
+      "payload_bytes": 10156,
+      "sha256": "7b112a08dd0b27a1c6437c042eda9d076e824c265805f31f64b3a8b68ea2abea",
+      "marker_hits": []
+    },
+    "PKDefault": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 640,
+      "sha256": "d484f06547ab750320ffca10b852ccd6ff48d51aefa2d1bfa1667d0c7b7ba438",
+      "marker_hits": []
+    },
+    "KEKDefault": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 1560,
+      "sha256": "8599624905e4fa11b379471f80f870369cc046d1ed45fefe540072a6784934bf",
+      "marker_hits": []
+    },
+    "dbDefault": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 3143,
+      "sha256": "5dbc0253a9bb2a84e03522cfc37a3b5be3b1088ecfcd753d08f1425cdef2b5c1",
+      "marker_hits": []
+    },
+    "dbxDefault": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 10156,
+      "sha256": "7b112a08dd0b27a1c6437c042eda9d076e824c265805f31f64b3a8b68ea2abea",
+      "marker_hits": []
+    },
+    "MemoryOverwriteRequestControl": {
+      "guid": "e20939be-32d4-41be-a150-897f85d49829",
+      "attributes": 7,
+      "payload_bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "marker_hits": []
+    },
+    "MemoryOverwriteRequestControlLock": {
+      "guid": "bb983ccf-151d-40e1-a07b-4a17be168292",
+      "attributes": 7,
+      "payload_bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "marker_hits": []
+    },
+    "SecureBoot": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "marker_hits": []
+    },
+    "SetupMode": {
+      "guid": "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+      "attributes": 6,
+      "payload_bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "marker_hits": []
+    }
+  },
+  "active_matches_default": {
+    "PK": true,
+    "KEK": true,
+    "db": true,
+    "dbx": true
+  }
+}

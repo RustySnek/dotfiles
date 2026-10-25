@@ -1,0 +1,93 @@
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -794,7 +794,7 @@
+     Aml *resource_template;
+ 
+     /* DRAM controller */
+-    dev = aml_device("DRAC");
++    dev = aml_device("MBRS");
+     aml_append(dev, aml_name_decl("_HID", aml_string("PNP0C01")));
+ 
+     resource_template = aml_resource_template();
+@@ -908,8 +908,8 @@
+         if (pm->smi_on_cpuhp) {
+             /* reserve SMI block resources, IO ports 0xB2, 0xB3 */
+             dev = aml_device("PCI0.SMI0");
+-            aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A06")));
+-            aml_append(dev, aml_name_decl("_UID", aml_string("SMI resources")));
++            aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A05")));
++            aml_append(dev, aml_name_decl("_UID", aml_string("System management resources")));
+             crs = aml_resource_template();
+             aml_append(crs,
+                 aml_io(
+@@ -1129,7 +1129,7 @@
+ 
+     /* reserve GPE0 block resources */
+     dev = aml_device("GPE0");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
++    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A05")));
+     aml_append(dev, aml_name_decl("_UID", aml_string("GPE0 resources")));
+     /* device present, functioning, decoding, not shown in UI */
+     aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+--- a/hw/acpi/pcihp.c
++++ b/hw/acpi/pcihp.c
+@@ -690,9 +690,9 @@
+     Aml *dev, *crs;
+ 
+     dev = aml_device("PHPR");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A06")));
++    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0A05")));
+     aml_append(dev,
+-               aml_name_decl("_UID", aml_string("PCI Hotplug resources")));
++               aml_name_decl("_UID", aml_string("PCI control resources")));
+     /* device present, functioning, decoding, not shown in UI */
+     aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+     crs = aml_resource_template();
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -361,9 +361,9 @@
+         Aml *crs;
+ 
+         aml_append(cpu_ctrl_dev,
+-            aml_name_decl("_HID", aml_eisaid("PNP0A06")));
++            aml_name_decl("_HID", aml_eisaid("PNP0A05")));
+         aml_append(cpu_ctrl_dev,
+-            aml_name_decl("_UID", aml_string("CPU Hotplug resources")));
++            aml_name_decl("_UID", aml_string("CPU control resources")));
+         aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+ 
+         assert((rs == AML_SYSTEM_IO) || (rs == AML_SYSTEM_MEMORY));
+--- a/hw/acpi/cpu_hotplug.c
++++ b/hw/acpi/cpu_hotplug.c
+@@ -255,9 +255,9 @@
+ 
+     /* create PCI0.PRES device and its _CRS to reserve CPU hotplug MMIO */
+     dev = aml_device("PCI0." stringify(CPU_HOTPLUG_RESOURCE_DEVICE));
+-    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A06")));
++    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A05")));
+     aml_append(dev,
+-        aml_name_decl("_UID", aml_string("CPU Hotplug resources"))
++        aml_name_decl("_UID", aml_string("CPU control resources"))
+     );
+     /* device present, functioning, decoding, not shown in UI */
+     aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+--- a/hw/acpi/memory_hotplug.c
++++ b/hw/acpi/memory_hotplug.c
+@@ -347,7 +347,7 @@
+     {
+         Aml *crs;
+ 
+-        aml_append(mem_ctrl_dev, aml_name_decl("_HID", aml_string("PNP0A06")));
++        aml_append(mem_ctrl_dev, aml_name_decl("_HID", aml_string("PNP0A05")));
+         aml_append(mem_ctrl_dev,
+             aml_name_decl("_UID", aml_string("Memory hotplug resources")));
+ 
+@@ -384,7 +384,7 @@
+         char *mmio_path = g_strdup_printf("%s." MEMORY_HOTPLUG_IO_REGION,
+                                           mhp_res_path);
+ 
+-        aml_append(dev_container, aml_name_decl("_HID", aml_string("PNP0A06")));
++        aml_append(dev_container, aml_name_decl("_HID", aml_string("PNP0A05")));
+         aml_append(dev_container,
+             aml_name_decl("_UID", aml_string("DIMM devices")));
+ 

@@ -1,0 +1,58 @@
+Subject: [PATCH] i386/acpi: omit the guest DSDT debug port
+
+Based on QEMU v10.2.4. The generated DSDT debug method writes to I/O
+port 0x0402 and is not needed by guest devices. Omit both its definition
+and the call that adds it to the table.
+
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -468,41 +468,6 @@
+     return dev;
+ }
+ 
+-static void build_dbg_aml(Aml *table)
+-{
+-    Aml *field;
+-    Aml *method;
+-    Aml *while_ctx;
+-    Aml *scope = aml_scope("\\");
+-    Aml *buf = aml_local(0);
+-    Aml *len = aml_local(1);
+-    Aml *idx = aml_local(2);
+-
+-    aml_append(scope,
+-       aml_operation_region("DBG", AML_SYSTEM_IO, aml_int(0x0402), 0x01));
+-    field = aml_field("DBG", AML_BYTE_ACC, AML_NOLOCK, AML_PRESERVE);
+-    aml_append(field, aml_named_field("DBGB", 8));
+-    aml_append(scope, field);
+-
+-    method = aml_method("DBUG", 1, AML_NOTSERIALIZED);
+-
+-    aml_append(method, aml_to_hexstring(aml_arg(0), buf));
+-    aml_append(method, aml_to_buffer(buf, buf));
+-    aml_append(method, aml_subtract(aml_sizeof(buf), aml_int(1), len));
+-    aml_append(method, aml_store(aml_int(0), idx));
+-
+-    while_ctx = aml_while(aml_lless(idx, len));
+-    aml_append(while_ctx,
+-        aml_store(aml_derefof(aml_index(buf, idx)), aml_name("DBGB")));
+-    aml_append(while_ctx, aml_increment(idx));
+-    aml_append(method, while_ctx);
+-
+-    aml_append(method, aml_store(aml_int(0x0A), aml_name("DBGB")));
+-    aml_append(scope, method);
+-
+-    aml_append(table, scope);
+-}
+-
+ static Aml *build_link_dev(const char *name, uint8_t uid, Aml *reg)
+ {
+     Aml *dev;
+@@ -878,7 +843,6 @@
+     acpi_table_begin(&table, table_data);
+     dsdt = init_aml_allocator();
+ 
+-    build_dbg_aml(dsdt);
+     if (i440fx) {
+         sb_scope = aml_scope("_SB");
+         dev = aml_device("PCI0");

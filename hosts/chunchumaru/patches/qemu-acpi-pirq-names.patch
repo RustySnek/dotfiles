@@ -1,0 +1,79 @@
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -699,7 +699,7 @@
+     g_free(s);
+ }
+ 
+-static Aml *build_q35_routing_table(const char *str)
++static Aml *build_q35_routing_table(const char *str, const char *extended)
+ {
+     int i;
+     Aml *pkg;
+@@ -707,22 +707,27 @@
+ 
+     pkg = aml_package(128);
+     for (i = 0; i < 0x18; i++) {
++            memcpy(name, extended, 3);
+             name[3] = 'E' + (i & 0x3);
+             append_q35_prt_entry(pkg, i, name);
+     }
+ 
++    memcpy(name, extended, 3);
+     name[3] = 'E';
+     append_q35_prt_entry(pkg, 0x18, name);
+ 
+     /* INTA -> PIRQA for slot 25 - 31, see the default value of D<N>IR */
++    memcpy(name, str, 3);
+     for (i = 0x0019; i < 0x1e; i++) {
+         name[3] = 'A';
+         append_q35_prt_entry(pkg, i, name);
+     }
+ 
+     /* PCIe->PCI bridge. use PIRQ[E-H] */
++    memcpy(name, extended, 3);
+     name[3] = 'E';
+     append_q35_prt_entry(pkg, 0x1e, name);
++    memcpy(name, str, 3);
+     name[3] = 'A';
+     append_q35_prt_entry(pkg, 0x1f, name);
+ 
+@@ -745,9 +750,9 @@
+     aml_append(table, method);
+ 
+     aml_append(pci0_scope,
+-        aml_name_decl("PRTP", build_q35_routing_table("LNK")));
++        aml_name_decl("PRTP", build_q35_routing_table("LNK", "IRQ")));
+     aml_append(pci0_scope,
+-        aml_name_decl("IRQA", build_q35_routing_table("GSI")));
++        aml_name_decl("IRQA", build_q35_routing_table("GSI", "API")));
+ 
+     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+     {
+@@ -775,19 +780,19 @@
+     aml_append(sb_scope, build_link_dev("LNKB", 1, aml_name("PRQB")));
+     aml_append(sb_scope, build_link_dev("LNKC", 2, aml_name("PRQC")));
+     aml_append(sb_scope, build_link_dev("LNKD", 3, aml_name("PRQD")));
+-    aml_append(sb_scope, build_link_dev("LNKE", 4, aml_name("PRQE")));
+-    aml_append(sb_scope, build_link_dev("LNKF", 5, aml_name("PRQF")));
+-    aml_append(sb_scope, build_link_dev("LNKG", 6, aml_name("PRQG")));
+-    aml_append(sb_scope, build_link_dev("LNKH", 7, aml_name("PRQH")));
++    aml_append(sb_scope, build_link_dev("IRQE", 4, aml_name("PRQE")));
++    aml_append(sb_scope, build_link_dev("IRQF", 5, aml_name("PRQF")));
++    aml_append(sb_scope, build_link_dev("IRQG", 6, aml_name("PRQG")));
++    aml_append(sb_scope, build_link_dev("IRQH", 7, aml_name("PRQH")));
+ 
+     aml_append(sb_scope, build_gsi_link_dev("GSIA", 0x10, 0x10));
+     aml_append(sb_scope, build_gsi_link_dev("GSIB", 0x11, 0x11));
+     aml_append(sb_scope, build_gsi_link_dev("GSIC", 0x12, 0x12));
+     aml_append(sb_scope, build_gsi_link_dev("GSID", 0x13, 0x13));
+-    aml_append(sb_scope, build_gsi_link_dev("GSIE", 0x14, 0x14));
+-    aml_append(sb_scope, build_gsi_link_dev("GSIF", 0x15, 0x15));
+-    aml_append(sb_scope, build_gsi_link_dev("GSIG", 0x16, 0x16));
+-    aml_append(sb_scope, build_gsi_link_dev("GSIH", 0x17, 0x17));
++    aml_append(sb_scope, build_gsi_link_dev("APIE", 0x14, 0x14));
++    aml_append(sb_scope, build_gsi_link_dev("APIF", 0x15, 0x15));
++    aml_append(sb_scope, build_gsi_link_dev("APIG", 0x16, 0x16));
++    aml_append(sb_scope, build_gsi_link_dev("APIH", 0x17, 0x17));
+ 
+     aml_append(table, sb_scope);
+ }

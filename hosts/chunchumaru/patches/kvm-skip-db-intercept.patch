@@ -1,0 +1,94 @@
+Subject: [PATCH] KVM: AMD: opt-in skip of routine guest #DB interception
+
+Requires the experimental AMD native-CPUID patch (adds the per-VM
+KVM_X86_DISABLE_EXITS experiment plumbing) applied first. Default off.
+
+KVM intercepts #DB unconditionally for the CVE-2015-8104 benign-exception
+microcode DoS and for host-side single-step/hardware-breakpoint debugging.
+A trusted, self-owned VM that opts in drops the routine #DB intercept so a
+guest #DB is delivered by hardware without a VM exit, matching bare metal.
+The intercept is re-armed dynamically whenever KVM itself single-steps the
+guest (nmi_singlestep) or the guest is being debugged, so those paths keep
+working.  Only VMs that set the new bit are affected.
+
+--- a/include/uapi/linux/kvm.h	2026-10-25 01:45:51.168312358 +0200
++++ b/include/uapi/linux/kvm.h	2026-10-25 01:45:51.187620400 +0200
+@@ -670,6 +670,7 @@
+ #define KVM_X86_DISABLE_EXITS_CSTATE         (1 << 3)
+ #define KVM_X86_DISABLE_EXITS_APERFMPERF     (1 << 4)
+ #define KVM_X86_DISABLE_EXITS_CPUID            (1 << 5) /* experimental, AMD only */
++#define KVM_X86_DISABLE_EXITS_DB               (1 << 6) /* experimental, AMD only */
+ 
+ /* for KVM_ENABLE_CAP */
+ struct kvm_enable_cap {
+--- a/arch/x86/kvm/x86.c	2026-10-25 01:45:51.173102566 +0200
++++ b/arch/x86/kvm/x86.c	2026-10-25 01:45:51.188271132 +0200
+@@ -4326,7 +4326,7 @@
+ 
+ 	/* Raw CPUID is an explicit, per-VM AMD experiment. */
+ 	if (boot_cpu_has(X86_FEATURE_SVM))
+-		r |= KVM_X86_DISABLE_EXITS_CPUID;
++		r |= KVM_X86_DISABLE_EXITS_CPUID | KVM_X86_DISABLE_EXITS_DB;
+ 
+ 	if (boot_cpu_has(X86_FEATURE_APERFMPERF))
+ 		r |= KVM_X86_DISABLE_EXITS_APERFMPERF;
+--- a/arch/x86/kvm/svm/svm.c	2026-10-25 01:45:51.177834846 +0200
++++ b/arch/x86/kvm/svm/svm.c	2026-10-25 01:45:51.189037297 +0200
+@@ -909,6 +909,14 @@
+ {
+ 	svm->nmi_singlestep = false;
+ 
++	/* Drop the #DB intercept that was re-armed for single-stepping when
++	 * the per-VM opt-in has disabled routine #DB interception and the
++	 * guest is not itself being debugged. */
++	if ((svm->vcpu.kvm->arch.disabled_exits & KVM_X86_DISABLE_EXITS_DB) &&
++	    !(svm->vcpu.guest_debug &
++	      (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP)))
++		clr_exception_intercept(svm, DB_VECTOR);
++
+ 	if (!(svm->vcpu.guest_debug & KVM_GUESTDBG_SINGLESTEP)) {
+ 		/* Clear our flags if they were not set by the guest */
+ 		if (!(svm->nmi_singlestep_guest_rflags & X86_EFLAGS_TF))
+@@ -1146,7 +1154,13 @@
+ 	set_exception_intercept(svm, UD_VECTOR);
+ 	set_exception_intercept(svm, MC_VECTOR);
+ 	set_exception_intercept(svm, AC_VECTOR);
+-	set_exception_intercept(svm, DB_VECTOR);
++	/* #DB interception is mandatory for the CVE-2015-8104 benign-exception
++	 * DoS and for debugging; skip it only for an opt-in VM that is not
++	 * being debugged, re-arming it dynamically where needed. */
++	if (!(vcpu->kvm->arch.disabled_exits & KVM_X86_DISABLE_EXITS_DB) ||
++	    (vcpu->guest_debug &
++	     (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP)))
++		set_exception_intercept(svm, DB_VECTOR);
+ 	/*
+ 	 * Guest access to VMware backdoor ports could legitimately
+ 	 * trigger #GP because of TSS I/O permission bitmap.
+@@ -1905,6 +1919,17 @@
+ 		if (vcpu->guest_debug & KVM_GUESTDBG_USE_SW_BP)
+ 			set_exception_intercept(svm, BP_VECTOR);
+ 	}
++
++	/* With the per-VM opt-in, routine #DB interception is disabled, but
++	 * hardware single-step and hardware breakpoints still require it. */
++	if ((vcpu->kvm->arch.disabled_exits & KVM_X86_DISABLE_EXITS_DB) &&
++	    !svm->nmi_singlestep) {
++		if (vcpu->guest_debug &
++		    (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP))
++			set_exception_intercept(svm, DB_VECTOR);
++		else
++			clr_exception_intercept(svm, DB_VECTOR);
++	}
+ }
+ 
+ static void new_asid(struct vcpu_svm *svm, struct svm_cpu_data *sd)
+@@ -4175,6 +4200,9 @@
+ 	 */
+ 	svm->nmi_singlestep_guest_rflags = svm_get_rflags(vcpu);
+ 	svm->nmi_singlestep = true;
++	/* KVM single-steps via TF and must trap the resulting #DB even when
++	 * the per-VM opt-in disabled routine #DB interception. */
++	set_exception_intercept(svm, DB_VECTOR);
+ 	svm->vmcb->save.rflags |= (X86_EFLAGS_TF | X86_EFLAGS_RF);
+ }
+ 

@@ -1,0 +1,89 @@
+Subject: [PATCH] KVM: x86: opt-in strict user-mode hypercall and SVM faults
+
+Based on zen-kernel v7.2.7-zen1. Only VMs that disable the legacy
+KVM_X86_QUIRK_FIX_HYPERCALL_INSN quirk take the new paths.
+
+Native VMMCALL (SVM_EXIT_VMMCALL) from user mode becomes #UD via the
+kvm_emulate_hypercall wrapper.  The foreign VMCALL instruction, which on
+AMD #UDs into the emulator, loses its Priv decode flag so the emulator no
+longer raises a privileged #GP before em_hypercall runs; the CPL decision
+moves into emulator_fix_hypercall, which injects #UD for a strict VM and
+reproduces the legacy CPL>0 #GP for quirk-enabled guests.  This makes both
+the VMCALL and VMMCALL user-mode probes fault as on bare metal (#UD), so
+KVM's on-the-fly instruction patching is no longer observable.
+
+--- a/arch/x86/kvm/emulate.c	2026-10-25 02:39:38.773088755 +0200
++++ b/arch/x86/kvm/emulate.c	2026-10-25 02:39:38.788604653 +0200
+@@ -3951,7 +3951,7 @@
+ 
+ static const struct opcode group7_rm0[] = {
+ 	N,
+-	I(SrcNone | Priv | EmulateOnUD,	em_hypercall),
++	I(SrcNone | EmulateOnUD,	em_hypercall),
+ 	N, N, N, N, N, N,
+ };
+ 
+--- a/arch/x86/kvm/x86.c	2026-10-25 02:39:38.761312570 +0200
++++ b/arch/x86/kvm/x86.c	2026-10-25 02:39:38.787337493 +0200
+@@ -10051,6 +10051,15 @@
+ 	if (kvm_hv_hypercall_enabled(vcpu))
+ 		return kvm_hv_hypercall(vcpu);
+ 
++	/* Match the hardware VMMCALL fault when legacy instruction fixing
++	 * has been disabled for this VM.  With guest SVME=0 a user-mode
++	 * VMMCALL is #UD, not #GP, so user mode must not consume it. */
++	if (kvm_x86_call(get_cpl)(vcpu) &&
++	    !kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN)) {
++		kvm_queue_exception(vcpu, UD_VECTOR);
++		return 1;
++	}
++
+ 	return __kvm_emulate_hypercall(vcpu, kvm_x86_call(get_cpl)(vcpu),
+ 				       complete_hypercall_exit);
+ }
+@@ -10072,6 +10081,19 @@
+ 		ctxt->have_exception = true;
+ 		return X86EMUL_PROPAGATE_FAULT;
+ 	}
++
++	/*
++	 * The legacy instruction fix is defined only at CPL0.  VMCALL no
++	 * longer carries the emulator Priv flag, so reproduce the privileged
++	 * #GP here for quirk-enabled guests.
++	 */
++	if (kvm_x86_call(get_cpl)(vcpu)) {
++		ctxt->exception.error_code_valid = true;
++		ctxt->exception.error_code = 0;
++		ctxt->exception.vector = GP_VECTOR;
++		ctxt->have_exception = true;
++		return X86EMUL_PROPAGATE_FAULT;
++	}
+ 
+ 	kvm_x86_call(patch_hypercall)(vcpu, instruction);
+ 
+--- a/arch/x86/kvm/svm/svm.c	2026-10-25 02:39:38.767133093 +0200
++++ b/arch/x86/kvm/svm/svm.c	2026-10-25 02:39:38.788210958 +0200
+@@ -237,8 +237,10 @@
+ 				kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+ 
+ 			svm_leave_nested(vcpu);
+-			/* #GP intercept is still needed for vmware backdoor */
+-			if (!enable_vmware_backdoor)
++			/* Retain #GP interception for strict SVM faults, so a
++			 * user-mode VMLOAD with guest SVME=0 becomes #UD. */
++			if (!enable_vmware_backdoor &&
++			    kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN))
+ 				clr_exception_intercept(svm, GP_VECTOR);
+ 
+ 			/*
+@@ -1151,7 +1153,9 @@
+ 	 * We intercept those #GP and allow access to them anyway
+ 	 * as VMware does.
+ 	 */
+-	if (enable_vmware_backdoor)
++	if (enable_vmware_backdoor ||
++	    (!is_sev_guest(vcpu) &&
++	     !kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN)))
+ 		set_exception_intercept(svm, GP_VECTOR);
+ 
+ 	svm_set_intercept(svm, INTERCEPT_INTR);

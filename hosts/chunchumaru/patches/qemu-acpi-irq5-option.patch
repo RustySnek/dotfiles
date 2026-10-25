@@ -1,0 +1,42 @@
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -357,6 +357,25 @@
+     return kvm_enabled() ? kvm_get_vm_type(ms) : 0;
+ }
+ 
++static bool x86_machine_get_pci_irq5_override(Object *obj, Error **errp)
++{
++    X86MachineState *x86ms = X86_MACHINE(obj);
++
++    return (x86ms->pci_irq_mask & (1U << 5)) != 0;
++}
++
++static void x86_machine_set_pci_irq5_override(Object *obj, bool value,
++                                               Error **errp)
++{
++    X86MachineState *x86ms = X86_MACHINE(obj);
++
++    if (value) {
++        x86ms->pci_irq_mask |= 1U << 5;
++    } else {
++        x86ms->pci_irq_mask &= ~(1U << 5);
++    }
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -411,6 +430,12 @@
+     object_class_property_set_description(oc, X86_MACHINE_PIC,
+         "Enable i8259 PIC");
+ 
++    object_class_property_add_bool(oc, "x-pci-irq5-override",
++        x86_machine_get_pci_irq5_override,
++        x86_machine_set_pci_irq5_override);
++    object_class_property_set_description(oc, "x-pci-irq5-override",
++        "Emit the legacy PCI IRQ5 MADT source override");
++
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+                                   x86_machine_set_oem_id);
