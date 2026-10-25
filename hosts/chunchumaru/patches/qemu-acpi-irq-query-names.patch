@@ -1,0 +1,71 @@
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -524,7 +524,7 @@
+     aml_append(dev, aml_name_decl("_PRS", crs));
+ 
+     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+-    aml_append(method, aml_return(aml_call1("IQST", reg)));
++    aml_append(method, aml_return(aml_call1("IRQS", reg)));
+     aml_append(dev, method);
+ 
+     method = aml_method("_DIS", 0, AML_NOTSERIALIZED);
+@@ -532,12 +532,12 @@
+     aml_append(dev, method);
+ 
+     method = aml_method("_CRS", 0, AML_NOTSERIALIZED);
+-    aml_append(method, aml_return(aml_call1("IQCR", reg)));
++    aml_append(method, aml_return(aml_call1("IRQC", reg)));
+     aml_append(dev, method);
+ 
+     method = aml_method("_SRS", 1, AML_NOTSERIALIZED);
+-    aml_append(method, aml_create_dword_field(aml_arg(0), aml_int(5), "PRRI"));
+-    aml_append(method, aml_store(aml_name("PRRI"), reg));
++    aml_append(method, aml_create_dword_field(aml_arg(0), aml_int(5), "IRRI"));
++    aml_append(method, aml_store(aml_name("IRRI"), reg));
+     aml_append(dev, method);
+ 
+     return dev;
+@@ -579,28 +579,28 @@
+ {
+     Aml *if_ctx;
+     uint32_t irqs;
+-    Aml *method = aml_method("IQCR", 1, AML_SERIALIZED);
++    Aml *method = aml_method("IRQC", 1, AML_SERIALIZED);
+     Aml *crs = aml_resource_template();
+ 
+     irqs = 0;
+     aml_append(crs, aml_interrupt(AML_CONSUMER, AML_LEVEL,
+                                   AML_ACTIVE_HIGH, AML_SHARED, &irqs, 1));
+-    aml_append(method, aml_name_decl("PRR0", crs));
++    aml_append(method, aml_name_decl("IRR0", crs));
+ 
+     aml_append(method,
+-        aml_create_dword_field(aml_name("PRR0"), aml_int(5), "PRRI"));
++        aml_create_dword_field(aml_name("IRR0"), aml_int(5), "IRRI"));
+ 
+     if (is_piix4) {
+         if_ctx = aml_if(aml_lless(aml_arg(0), aml_int(0x80)));
+-        aml_append(if_ctx, aml_store(aml_arg(0), aml_name("PRRI")));
++        aml_append(if_ctx, aml_store(aml_arg(0), aml_name("IRRI")));
+         aml_append(method, if_ctx);
+     } else {
+         aml_append(method,
+             aml_store(aml_and(aml_arg(0), aml_int(0xF), NULL),
+-                      aml_name("PRRI")));
++                      aml_name("IRRI")));
+     }
+ 
+-    aml_append(method, aml_return(aml_name("PRR0")));
++    aml_append(method, aml_return(aml_name("IRR0")));
+     return method;
+ }
+ 
+@@ -608,7 +608,7 @@
+ static Aml *build_irq_status_method(void)
+ {
+     Aml *if_ctx;
+-    Aml *method = aml_method("IQST", 1, AML_NOTSERIALIZED);
++    Aml *method = aml_method("IRQS", 1, AML_NOTSERIALIZED);
+ 
+     if_ctx = aml_if(aml_and(aml_int(0x80), aml_arg(0), NULL));
+     aml_append(if_ctx, aml_return(aml_int(0x09)));

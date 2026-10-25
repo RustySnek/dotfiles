@@ -1,0 +1,70 @@
+Subject: [PATCH] KVM: x86: tolerate unsupported guest wall-clock MSR accesses
+
+Based on zen-kernel v7.2.7-zen1, arch/x86/kvm/x86.c.
+
+For MSR_KVM_WALL_CLOCK and MSR_KVM_WALL_CLOCK_NEW only, return zero
+on guest reads and discard guest writes when guest_pv_has() rejects
+access. Keep host-initiated accesses and supported pvclock behavior
+unchanged. This does not bypass privilege checks or MSR filters.
+
+This is an intentional guest ABI deviation, not a TRAP/BLOCKSTEP fix.
+It applies to all VMs using this host kernel. No runtime validation
+has been performed.
+
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3678,15 +3678,21 @@
+ 		vcpu->arch.smi_count = data;
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+-		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return KVM_MSR_RET_UNSUPPORTED;
++		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2)) {
++			/* Ignore unsupported guest wall-clock writes only. */
++			return msr_info->host_initiated ?
++				KVM_MSR_RET_UNSUPPORTED : 0;
++		}
+ 
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+-		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return KVM_MSR_RET_UNSUPPORTED;
++		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE)) {
++			/* Ignore unsupported guest wall-clock writes only. */
++			return msr_info->host_initiated ?
++				KVM_MSR_RET_UNSUPPORTED : 0;
++		}
+ 
+ 		vcpu->kvm->arch.wall_clock = data;
+ 		kvm_write_wall_clock(vcpu->kvm, data, 0);
+@@ -4058,14 +4064,24 @@
+ 		msr_info->data = vcpu->arch.efer;
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK:
+-		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE))
+-			return KVM_MSR_RET_UNSUPPORTED;
++		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE)) {
++			if (msr_info->host_initiated)
++				return KVM_MSR_RET_UNSUPPORTED;
++			/* Unsupported guest wall-clock reads return zero. */
++			msr_info->data = 0;
++			return 0;
++		}
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;
+ 	case MSR_KVM_WALL_CLOCK_NEW:
+-		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2))
+-			return KVM_MSR_RET_UNSUPPORTED;
++		if (!guest_pv_has(vcpu, KVM_FEATURE_CLOCKSOURCE2)) {
++			if (msr_info->host_initiated)
++				return KVM_MSR_RET_UNSUPPORTED;
++			/* Unsupported guest wall-clock reads return zero. */
++			msr_info->data = 0;
++			return 0;
++		}
+ 
+ 		msr_info->data = vcpu->kvm->arch.wall_clock;
+ 		break;

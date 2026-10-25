@@ -1,0 +1,30 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = HostDefaultsDxe
+  FILE_GUID = 0c6d5cc9-6f94-4d9f-9df6-434ea5668d39
+  MODULE_TYPE = DXE_DRIVER
+  ENTRY_POINT = HostDefaultsEntryPoint
+
+[Sources]
+  HostDefaultsDxe.c
+  HostDefaults.h
+  HostDefaultData.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+
+[Guids]
+  gEfiGlobalVariableGuid
+  gEfiImageSecurityDatabaseGuid
+
+[Depex]
+  gEfiVariableArchProtocolGuid AND gEfiVariableWriteArchProtocolGuid

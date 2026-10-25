@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, customVmPatchesEnabled, ... }:
 {
   virtualisation.libvirtd.onBoot = "start";
   systemd.services.libvirtd.preStart =
@@ -30,7 +30,7 @@
     '';
 
   boot.extraModprobeConfig = ''
-    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,c0a9:2263,10de:2f04,10de:2f80
+    options vfio-pci ids=10de:1ad9,10de:1ad8,10de:10f8,10de:1e81,1987:5015,10de:2f04,10de:2f80
     softdep nvme pre: vfio-pci
     options snd_hda_intel power_save=0
   '';
@@ -61,7 +61,20 @@
     #ovmf.packages = [ pkgs.unstable.OVMFFull.fd ];
     vhostUserPackages = with pkgs; [ virtiofsd ];
     runAsRoot = false;
-    package = pkgs.qemu_kvm;
+    # Use the boot.nix master switch for all custom QEMU patches as well.
+    package = if customVmPatchesEnabled then
+      import ./patches/qemu-acpi.nix {
+        inherit lib;
+        qemu = pkgs.qemu_kvm;
+        firmware = import ./patches/ovmf.nix {
+          OVMF = pkgs.OVMFFull;
+          inherit (pkgs) python3;
+        };
+        oemId = "ALASKA";
+        # Host DSDT: "A M I " followed by two NUL bytes (added by the override).
+        oemTableId = "A M I ";
+      }
+    else pkgs.qemu_kvm;
   };
   virtualisation.kvmfr = {
     enable = true;
@@ -81,6 +94,11 @@
 
     "ovmf/edk2-i386-vars.fd" = {
       source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
+    };
+  } // lib.optionalAttrs customVmPatchesEnabled {
+    # Manual enrollment tool only: never execute it during activation or VM boot.
+    "ovmf/HostEnrollDefaults.efi" = {
+      source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/HostEnrollDefaults.efi";
     };
   };
   virtualisation.libvirtd.qemu.verbatimConfig = ''

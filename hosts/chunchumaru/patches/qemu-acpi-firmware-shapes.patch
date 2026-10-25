@@ -1,0 +1,39 @@
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -950,7 +950,9 @@
+ 
+     scope =  aml_scope("_GPE");
+     {
+-        aml_append(scope, aml_name_decl("_HID", aml_string("ACPI0006")));
++        method = aml_method("_HID", 0, AML_NOTSERIALIZED);
++        aml_append(method, aml_return(aml_string("ACPI0006")));
++        aml_append(scope, method);
+         if (machine->nvdimms_state->is_enabled) {
+             method = aml_method("_E04", 0, AML_NOTSERIALIZED);
+             aml_append(method, aml_notify(aml_name("\\_SB.NVDR"),
+@@ -1175,7 +1177,7 @@
+         aml_append(scope, aml_name_decl("_S4", pkg));
+     }
+ 
+-    pkg = aml_package(4);
++    pkg = aml_varpackage(4);
+     aml_append(pkg, aml_int(0)); /* PM1a_CNT.SLP_TYP */
+     aml_append(pkg, aml_int(0)); /* PM1b_CNT.SLP_TYP not impl. */
+     aml_append(pkg, aml_int(0)); /* reserved */
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -860,10 +860,10 @@
+     Aml *sb_scope = aml_scope("\\_SB");
+ 
+     /* ICH9 PCI to ISA irq remapping */
+-    aml_append(scope, aml_operation_region("PIRQ", AML_PCI_CONFIG,
++    aml_append(scope, aml_operation_region("IRQR", AML_PCI_CONFIG,
+                                            aml_int(0x60), 0x0C));
+     /* Fields declarion has to happen *after* operation region */
+-    field = aml_field("PCI0.SF8.PIRQ", AML_BYTE_ACC, AML_NOLOCK, AML_PRESERVE);
++    field = aml_field("PCI0.SF8.IRQR", AML_BYTE_ACC, AML_NOLOCK, AML_PRESERVE);
+     aml_append(field, aml_named_field("PRQA", 8));
+     aml_append(field, aml_named_field("PRQB", 8));
+     aml_append(field, aml_named_field("PRQC", 8));

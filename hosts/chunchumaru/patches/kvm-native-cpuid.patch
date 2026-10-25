@@ -1,0 +1,40 @@
+Subject: [PATCH] KVM: AMD: opt-in raw CPUID per VM for timing experiment
+
+Default KVM CPUID filtering remains unchanged. A VM must request the new
+KVM_CAP_X86_DISABLE_EXITS bit before creating vCPUs. Raw host CPUID is
+experimental and may disagree with the configured guest CPU/topology.
+
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -669,6 +669,7 @@
+ #define KVM_X86_DISABLE_EXITS_PAUSE          (1 << 2)
+ #define KVM_X86_DISABLE_EXITS_CSTATE         (1 << 3)
+ #define KVM_X86_DISABLE_EXITS_APERFMPERF     (1 << 4)
++#define KVM_X86_DISABLE_EXITS_CPUID            (1 << 5) /* experimental, AMD only */
+ 
+ /* for KVM_ENABLE_CAP */
+ struct kvm_enable_cap {
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4307,6 +4307,10 @@
+ static u64 kvm_get_allowed_disable_exits(void)
+ {
+ 	u64 r = KVM_X86_DISABLE_EXITS_PAUSE;
++
++	/* Raw CPUID is an explicit, per-VM AMD experiment. */
++	if (boot_cpu_has(X86_FEATURE_SVM))
++		r |= KVM_X86_DISABLE_EXITS_CPUID;
+ 
+ 	if (boot_cpu_has(X86_FEATURE_APERFMPERF))
+ 		r |= KVM_X86_DISABLE_EXITS_APERFMPERF;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1163,6 +1163,8 @@
+ 	svm_set_intercept(svm, INTERCEPT_SELECTIVE_CR0);
+ 	svm_set_intercept(svm, INTERCEPT_RDPMC);
+ 	svm_set_intercept(svm, INTERCEPT_CPUID);
++	if (vcpu->kvm->arch.disabled_exits & KVM_X86_DISABLE_EXITS_CPUID)
++		svm_clr_intercept(svm, INTERCEPT_CPUID);
+ 	svm_set_intercept(svm, INTERCEPT_INVD);
+ 	svm_set_intercept(svm, INTERCEPT_INVLPG);
+ 	svm_set_intercept(svm, INTERCEPT_INVLPGA);

@@ -39,8 +39,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    boot.extraModulePackages = with pkgs; [
-      unstable.linuxKernel.packages.linux_zen.kvmfr
+    boot.extraModulePackages = [
+      config.boot.kernelPackages.kvmfr
     ];
     boot.initrd.kernelModules = [ "kvmfr" ];
 

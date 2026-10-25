@@ -1,0 +1,76 @@
+Subject: [PATCH] x86/KVM: opt-in strict instruction faults per VM
+
+Based on QEMU v10.2.4 after the existing ACPI patches. Defaults off.
+When enabled, KVM disables its legacy hypercall-instruction fix quirk
+for this VM; the companion host KVM patch gives user-mode VMMCALL and
+hidden-SVM VMLOAD hardware-style faults.
+
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -386,6 +386,16 @@
+     X86_MACHINE(obj)->waet_enabled = value;
+ }
+ 
++static bool x86_machine_get_strict_instruction_faults(Object *obj, Error **errp)
++{
++    return X86_MACHINE(obj)->strict_instruction_faults;
++}
++
++static void x86_machine_set_strict_instruction_faults(Object *obj, bool value, Error **errp)
++{
++    X86_MACHINE(obj)->strict_instruction_faults = value;
++}
++
+ static void x86_machine_initfn(Object *obj)
+ {
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -451,6 +461,12 @@
+         x86_machine_get_waet, x86_machine_set_waet);
+     object_class_property_set_description(oc, "x-waet",
+         "Include the Windows ACPI Emulated Devices Table");
++
++    object_class_property_add_bool(oc, "x-strict-instruction-faults",
++        x86_machine_get_strict_instruction_faults,
++        x86_machine_set_strict_instruction_faults);
++    object_class_property_set_description(oc, "x-strict-instruction-faults",
++        "Disable KVM legacy hypercall instruction fixing for this VM");
+ 
+     object_class_property_add_str(oc, X86_MACHINE_OEM_ID,
+                                   x86_machine_get_oem_id,
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -71,6 +71,7 @@
+     /* CPU and apic information: */
+     unsigned pci_irq_mask;
+     bool waet_enabled;
++    bool strict_instruction_faults;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+     SgxEPCList *sgx_epc_list;
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -3269,6 +3269,24 @@
+         }
+     }
+ 
++    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE) &&
++        X86_MACHINE(ms)->strict_instruction_faults) {
++        int supported_quirks = kvm_check_extension(s, KVM_CAP_DISABLE_QUIRKS2);
++
++        if (!(supported_quirks & KVM_X86_QUIRK_FIX_HYPERCALL_INSN)) {
++            error_report("kvm: strict instruction faults require "
++                         "KVM_CAP_DISABLE_QUIRKS2 hypercall support");
++            return -ENOTSUP;
++        }
++        ret = kvm_vm_enable_cap(s, KVM_CAP_DISABLE_QUIRKS2, 0,
++                                KVM_X86_QUIRK_FIX_HYPERCALL_INSN);
++        if (ret < 0) {
++            error_report("kvm: failed to disable hypercall instruction "
++                         "fixing: %s", strerror(-ret));
++            return ret;
++        }
++    }
++
+     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
+     has_sregs2 = kvm_check_extension(s, KVM_CAP_SREGS2) > 0;
+ 
