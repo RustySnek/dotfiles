@@ -14,6 +14,7 @@
     ./tt_download.nix
     ./yt_music.nix
     ./mpv.nix
+    ./dolphin.nix
   ];
 
   home.packages = with pkgs; [

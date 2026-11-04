@@ -83,9 +83,46 @@
   programs.gamemode.enable = true;
   programs.command-not-found.enable = false;
 
+  # Images open in Loupe (GTK4, Rust; decodes in sandboxed glycin loaders)
+  # instead of GIMP. Every MIME type Loupe's desktop file lists.
+  xdg.mime.defaultApplications = lib.genAttrs [
+    "image/apng"
+    "image/avif"
+    "image/bmp"
+    "image/gif"
+    "image/heic"
+    "image/jp2"
+    "image/jpeg"
+    "image/jxl"
+    "image/png"
+    "image/qoi"
+    "image/svg+xml"
+    "image/svg+xml-compressed"
+    "image/tiff"
+    "image/vnd.microsoft.icon"
+    "image/webp"
+    "image/x-dds"
+    "image/x-exr"
+    "image/x-portable-anymap"
+    "image/x-portable-bitmap"
+    "image/x-portable-graymap"
+    "image/x-portable-pixmap"
+    "image/x-qoi"
+    "image/x-tga"
+    "image/x-win-bitmap"
+    "image/x-xbitmap"
+    "image/x-xpixmap"
+  ] (_: "org.gnome.Loupe.desktop");
+  # KDE's service cache (ksycoca, which Dolphin uses for "Open With") can't
+  # see store changes since every store mtime is 1970, so drop it on each
+  # switch like the Plasma module does; it is rebuilt on next use.
+  system.userActivationScripts.rebuildSycoca = ''
+    rm -f "''${XDG_CACHE_HOME:-$HOME/.cache}/ksycoca"*
+  '';
+
   environment.systemPackages = with pkgs; [
-    kdePackages.dolphin
     kdePackages.qt6ct
+    loupe
     kdePackages.ffmpegthumbs
     kdePackages.kdegraphics-thumbnailers
     android-tools

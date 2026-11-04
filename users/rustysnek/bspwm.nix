@@ -140,6 +140,7 @@ in
   xdg.configFile."sxhkd/sxhkdrc".onChange = "${pkgs.procps}/bin/pkill -USR1 -x sxhkd || true";
   services.sxhkd.keybindings = {
     "super + Return" = "kitty ~";
+    "super + d" = "dolphin";
     "super + b" = "~/Projects/VM/toggle.sh";
     # "Print" = "gscreenshot -sc";
     "Print" = "flameshot gui";
