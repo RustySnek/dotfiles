@@ -154,6 +154,10 @@ in
     "alt + {_,shift + }{1-9,0}" = "bspc {desktop -f,node -d} '^{11,12,13,14,15,16,17,18,19,20}'";
 
   };
+  programs.polybar-forest = {
+    enable = true;
+    theme = "halloween";
+  };
   xsession.windowManager.bspwm = {
     enable = true;
     settings = {
@@ -167,7 +171,6 @@ in
     };
     extraConfigEarly = builtins.concatStringsSep "\n" [
       ''
-        ~/.config/polybar-themes/setup.sh &
         openrgb --profile ~/Projects/dotfiles/users/rustysnek/main.orp &
         easyeffects -l main &
         xrandr --output DisplayPort-0 --primary --auto --left-of HDMI-A-0 --rate 144 --auto && xrandr --output HDMI-A-0 --mode 1920x1080 --rate 144.00
@@ -179,7 +182,7 @@ in
         xwallpaper --stretch ~/Pictures/pape.jpg &
         # polybar's alsa module disables itself if wireplumber hasn't published a default sink yet
         for _ in $(seq 100); do wpctl inspect @DEFAULT_AUDIO_SINK@ >/dev/null 2>&1 && break; sleep 0.1; done
-        ~/.config/polybar/launch.sh --forest
+        polybar-forest
       ''
     ];
     package = pkgs.bspwm;

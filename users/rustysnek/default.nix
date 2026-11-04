@@ -15,6 +15,7 @@
     ./yt_music.nix
     ./mpv.nix
     ./dolphin.nix
+    ./polybar
   ];
 
   home.packages = with pkgs; [
@@ -114,8 +115,6 @@
 
   services.udiskie.enable = true;
   xdg.enable = true;
-  #xdg.configFile."polybar".enable = true;
-  #xdg.configFile."polybar".source = ./polybar;
 
   home.persistence."/nix/persist" = {
     directories = [
