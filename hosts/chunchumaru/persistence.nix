@@ -2,6 +2,10 @@
 {
   environment.persistence."/nix/persist" = {
     directories = [
+      {
+        directory = "/var/lib/tailscale";
+        mode = "0700";
+      }
       "/var/lib/libvirt"
       "/var/lib/docker"
       "/var/lib/cups"

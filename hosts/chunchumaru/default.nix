@@ -57,6 +57,32 @@
   services.devmon.enable = true;
   services.tailscale = {
     enable = true;
+    openFirewall = true;
+    # Let the NixOS firewall enforce per-service rules on tailscale0.
+    extraSetFlags = [
+      "--netfilter-mode=off"
+      "--accept-dns=false"
+      "--ssh=false"
+      "--operator=rustysnek"
+    ];
+  };
+  services.sunshine = {
+    enable = true;
+    package = pkgs.unstable.sunshine;
+    autoStart = true;
+    openFirewall = false;
+    # X11 capture avoids granting Sunshine CAP_SYS_ADMIN.
+    capSysAdmin = false;
+    settings = {
+      sunshine_name = "chunchumaru";
+      capture = "x11";
+      encoder = "vaapi";
+      upnp = "disabled";
+      origin_web_ui_allowed = "pc";
+      lan_encryption_mode = 2;
+      wan_encryption_mode = 2;
+    };
+    applications.apps = [ { name = "Desktop"; } ];
   };
   services.earlyoom = {
     enable = true;

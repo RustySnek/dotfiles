@@ -118,6 +118,7 @@
 
   home.persistence."/nix/persist" = {
     directories = [
+      ".config/sunshine"
       ".local/share/docker"
       ".config/obs-studio"
       ".local/state/wireplumber"
